@@ -8,24 +8,62 @@ shinyServer(function(input, output, session) {
       profData<-prof[prof$profName==input$profName,]
 
       profDocs<-docs[prof$profName==input$profName]
-
-      return(list(profData,profDocs))
+      
+      txtTdmBi <- as.matrix(TermDocumentMatrix(profDocs, control = list(tokenize = BigramTokenizer)))
+      v = sort(rowSums(txtTdmBi),decreasing=TRUE)
+      d = data.frame(word = names(v),freq=v)
+      d<-d[!d$word%in%
+             c('final','midterm','finals','midterms','assignment','assignments','problem','problems'),]
+      if(nrow(d)>=30) d2<-d[1:30,]
+      else d2<-d
+      
+      d2$score <- score.sentiment(d2$word, pos.words, neg.words, .progress="text")
+      d2$sentiment <- rep(0)
+      d2$sentiment <- ifelse(d2$score>=1, "Positive", d2$sentiment)
+      d2$sentiment <- ifelse(d2$score==0, "Neutral", d2$sentiment)
+      d2$sentiment <- ifelse(d2$score<=-1, "Negative", d2$sentiment)
+      d2$sentiment<-factor(d2$sentiment,levels=c('Positive','Neutral','Negative'))
+      return(list(profData,d2))
     })
     
-  
-  output$sentiment_cloud <- renderPlot({
-    docsSubset<-Data()[[2]]
-    #browser()
-    txtTdmBi <- as.matrix(TermDocumentMatrix(docsSubset, control = list(tokenize = BigramTokenizer)))
-    v = sort(rowSums(txtTdmBi),decreasing=TRUE)
-    d = data.frame(word = names(v),freq=v)
-    d<-d[!d$word%in%
-           c('final','midterm','finals','midterms','assignment','assignments','problem','problems'),]
-    if(nrow(d)>=30) d2<-d[1:30,]
-    else d2<-d
-    wordcloud(words = d2$word,freq = d2$freq, scale=c(5,0.1),random.order = F,rot.per=0.35,min.freq=1, 
-              colors=brewer.pal(8, "Dark2"))  
-  })
+    output$sentiment_cloud <- renderPlot({
+      d2<-Data()[[2]]
+      #browser()
+      wordcloud(words = d2$word,freq = d2$freq, scale=c(5,0.1),random.order = F,rot.per=0.35,min.freq=1, 
+                colors=brewer.pal(8, "Dark2"))  
+    })
+    
+    output$sentiment_bar_chartWorkload<-renderChart2({
+      d2<-Data()[[2]]
+      #browser()
+      colors=colors[as.character(d2$sentiment)]
+      names(colors)<-NULL
+      
+      workload<-Highcharts$new()
+      workload$chart(type="column")
+      workload$series(data=d2$freq,colorByPoint=T,colors=colors,name='Workload Key Words')
+      #workload$series(data=d2$freq[d2$sentiment=='Positive'],name='Positive')
+      #mtdChart$series(data=lastYearMonthData,dashStyle="shortdot",name='Same Month Last Year')
+      workload$legend(symbolWidth = 80)
+      #mtdChart$yAxis(min=0,title=list(text=input$cumTrafficGraphOption))
+      workload$xAxis(title=list(text="Words"),categories=as.character(d2$word),labels=list(rotation=45))
+      workload$legend(enabled=F)
+      #workload$set(dom="workload")
+      return(workload)
+      
+    })
+    
+    # output$sentiment_bar_chartWorkload<-renderPlot({
+    #   d2<-Data()[[2]]
+    #   #browser()
+    #   ggplot(d2,aes(x=word, y=freq, fill=sentiment)) +
+    #     geom_bar(stat="identity", colour="white") +
+    #     theme(axis.text.x=element_text(angle=45, hjust=1)) + ylab("Frequency") + xlab("Word") +
+    #     scale_fill_manual(values=c("green", "grey", "red"))  
+    # })
+    
+    
+    
     # 
     # output$Rec1Name<-renderText({
     #   
