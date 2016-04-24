@@ -11,18 +11,28 @@ library('plyr')
 #library(tidyr)
 #library(hexbin)
 #library(recommenderlab)
-#suppressMessages(library(tm))
+suppressMessages(library(tm))
 #suppressMessages(library(SnowballC))
-#suppressMessages(library(wordcloud))
+suppressMessages(library(wordcloud))
 #suppressMessages(library(data.table))
+library("RWeka")
 
 options(stringsAsFactors = F)
+options(mc.cores=1)
+BigramTokenizer <- function(x) NGramTokenizer(x, Weka_control(min = 1, max = 3))
 
 
 prof<-readRDS("www/prof_combined_sentiment.rds")
 prof$profName<-factor(paste0(prof$first_name,' ',prof$last_name))
 
-
+corpus <- Corpus(VectorSource(prof$workload_text))
+docs <- tm_map(corpus, removePunctuation) 
+docs <- tm_map(docs, removeNumbers) 
+docs <- tm_map(docs, tolower)
+docs <- tm_map(docs, removeWords, c(stopwords("english")))
+#docs <- tm_map(docs, stemDocument)  
+docs <- tm_map(docs, PlainTextDocument)
+tdm <- TermDocumentMatrix(docs)
 
 createwc <- function(ASIN) {
   print(ASIN)

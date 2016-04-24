@@ -2,17 +2,30 @@ options(shiny.maxRequestSize=50*1024^2)
 
 shinyServer(function(input, output, session) {
 
-    # Data<-reactive({
-    #   
-    #   asinSelected<-amzData$ASIN[amzData$Name%in%input$moviesLiked]
-    #   
-    #   users<-unique(data_part$review_userid[data_part$product_productid%in%asinSelected])
-    #   movies<-data_part$product_productid[data_part$review_userid%in%users&data_part$review_score>=4]
-    #   newMovies<-movies[!movies%in%asinSelected]
-    #   
-    #   return(names(rev(sort(table(newMovies))))[1:3])
-    # })
-    # 
+    Data<-reactive({
+      #browser()
+
+      profData<-prof[prof$profName==input$profName,]
+
+      profDocs<-docs[prof$profName==input$profName]
+
+      return(list(profData,profDocs))
+    })
+    
+  
+  output$sentiment_cloud <- renderPlot({
+    docsSubset<-Data()[[2]]
+    #browser()
+    txtTdmBi <- as.matrix(TermDocumentMatrix(docsSubset, control = list(tokenize = BigramTokenizer)))
+    v = sort(rowSums(txtTdmBi),decreasing=TRUE)
+    d = data.frame(word = names(v),freq=v)
+    d<-d[!d$word%in%
+           c('final','midterm','finals','midterms','assignment','assignments','problem','problems'),]
+    if(nrow(d)>=30) d2<-d[1:30,]
+    else d2<-d
+    wordcloud(words = d2$word,freq = d2$freq, scale=c(5,0.1),random.order = F,rot.per=0.35,min.freq=1, 
+              colors=brewer.pal(8, "Dark2"))  
+  })
     # 
     # output$Rec1Name<-renderText({
     #   
@@ -22,24 +35,24 @@ shinyServer(function(input, output, session) {
     #   
     # })
     # 
-    output$profPic = renderImage({
-      #data<-Data()[1]
-      #browser()
-      #name<-gsub('\\[.*|\\(.*|[[:punct:]]','',as.character(amzData$Name[amzData$ASIN==data]))
-      # omdb.entry=search_by_title(name)
-      # result<-data.frame(find_by_id(omdb.entry$imdbID[1], include_tomatoes=T))
-      #url<-read_html(paste0('http://www.cs.columbia.edu/mice/persons/getPhoto.php?personID=1955'))
-
-      #src<-gsub('.*src=\\\"|\".*','',html_nodes(url,xpath="//div[@id='movie-image-section']//img"))
-      #html_nodes(url,xpath="//img")
-      #html_nodes(url,xpath="//tbody")
-
-      return(list(
-        src = "AdamCannon.jpg",
-        contentType = "image/jpeg",
-        alt = "Face"
-      ))
-    })
+    # output$profPic = renderImage({
+    #   #data<-Data()[1]
+    #   #browser()
+    #   #name<-gsub('\\[.*|\\(.*|[[:punct:]]','',as.character(amzData$Name[amzData$ASIN==data]))
+    #   # omdb.entry=search_by_title(name)
+    #   # result<-data.frame(find_by_id(omdb.entry$imdbID[1], include_tomatoes=T))
+    #   #url<-read_html(paste0('http://www.cs.columbia.edu/mice/persons/getPhoto.php?personID=1955'))
+    # 
+    #   #src<-gsub('.*src=\\\"|\".*','',html_nodes(url,xpath="//div[@id='movie-image-section']//img"))
+    #   #html_nodes(url,xpath="//img")
+    #   #html_nodes(url,xpath="//tbody")
+    # 
+    #   return(list(
+    #     src = "AdamCannon.jpg",
+    #     contentType = "image/jpeg",
+    #     alt = "Face"
+    #   ))
+    # })
     # 
     # output$Rec1Rating<-renderText({
     #   data<-Data()[1]

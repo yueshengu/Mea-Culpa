@@ -31,9 +31,9 @@ dashboardPage(
                 #        box(width = NULL, solidHeader = TRUE,
                 #            leafletOutput("Map"))),
                 column(width=4,
-                       box(title = "First Recommendation", status = "primary",
-                           width=NULL,solidHeader=T#,
-                           # textOutput("Rec1Name"),
+                       box(title = "Workload", status = "primary",
+                           width=NULL,solidHeader=T,
+                           plotOutput("sentiment_cloud")
                            # br(),
                            # uiOutput('Rec1image'),
                            # br(),
