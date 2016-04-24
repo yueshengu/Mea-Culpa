@@ -1,0 +1,214 @@
+{
+  "courses": [
+    {
+      "department_ids": [
+        7
+      ], 
+      "id": 3807, 
+      "name": "Intro to Computer Science- Programming in Java", 
+      "number": "COMS W1004"
+    },    
+    {
+      "department_ids": [
+        7
+      ], 
+      "id": 4957, 
+      "name": "Intro to Computer Science- Programming in MATLAB", 
+      "number": "COMS W1005"
+    },    
+    {
+      "department_ids": [
+        7
+      ], 
+      "id": 2906, 
+      "name": "Object-Oriented Programming and Design in Java", 
+      "number": "COMS W1007"
+    },
+    {
+      "department_ids": [
+        7
+      ], 
+      "id": 4, 
+      "name": "Data Structures in Java", 
+      "number": "COMS W3134"
+    },    
+    {
+      "department_ids": [
+        7
+      ], 
+      "id": 4758, 
+      "name": "Advanced Programming", 
+      "number": "COMS W3157"
+    },
+    {
+      "department_ids": [
+        7
+      ], 
+      "id": 397, 
+      "name": "Discrete Mathematics", 
+      "number": "COMS W3203"
+    },
+    {
+      "department_ids": [
+        7
+      ], 
+      "id": 234, 
+      "name": "Computer Science Theory: Computability - Models - Computation", 
+      "number": "COMS W3261"
+    }, 
+    {
+      "department_ids": [
+        7, 
+        48
+      ], 
+      "id": 4251, 
+      "name": "Fundamentals of Computer Systems", 
+      "number": "CSEE W3827"
+    },
+    {
+      "department_ids": [
+        7
+      ], 
+      "id": 664, 
+      "name": "Introduction to Databases", 
+      "number": "COMS W4111"
+    },
+    {
+      "department_ids": [
+        7
+      ], 
+      "id": 3105, 
+      "name": "Programming Languages and Translators", 
+      "number": "COMS W4115"
+    },
+    {
+      "department_ids": [
+        7
+      ], 
+      "id": 2384, 
+      "name": "Operating Systems I", 
+      "number": "COMS W4118"
+    },     
+    {
+      "department_ids": [
+        7
+      ], 
+      "id": 4902, 
+      "name": "Computer Networks", 
+      "number": "CSEE W4119"
+    },
+    {
+      "department_ids": [
+        7
+      ], 
+      "id": 1616, 
+      "name": "Advanced Software Engineering", 
+      "number": "COMS W4156"
+    },  
+    {
+      "department_ids": [
+        7
+      ], 
+      "id": 6676, 
+      "name": "Computer Animation", 
+      "number": "COMS W4167"
+    }, 
+    {
+      "department_ids": [
+        7
+      ], 
+      "id": 663, 
+      "name": "User Interface Design", 
+      "number": "COMS W4170"
+    },
+    {
+      "department_ids": [
+        7
+      ], 
+      "id": 4907, 
+      "name": "Security Architecture & Engineering", 
+      "number": "COMS W4187"
+    },
+    {
+      "department_ids": [
+        7
+      ], 
+      "id": 4079, 
+      "name": "Analysis of Algorithms I", 
+      "number": "COMS W4231"
+    }, 
+    {
+      "department_ids": [
+        7
+      ], 
+      "id": 462, 
+      "name": "Introduction to Computational Complexity", 
+      "number": "COMS W4236"
+    },
+    {
+      "department_ids": [
+        7
+      ], 
+      "id": 2970, 
+      "name": "Introduction to Cryptography", 
+      "number": "COMS W4261"
+    }, 
+    {
+      "department_ids": [
+        7
+      ], 
+      "id": 2387, 
+      "name": "Programming & Problem Solving", 
+      "number": "COMS W4444"
+    },
+    {
+      "department_ids": [
+        7
+      ], 
+      "id": 2386, 
+      "name": "Computer Vision", 
+      "number": "COMS W4731"
+    },
+    {
+      "department_ids": [
+        7
+      ], 
+      "id": 2403, 
+      "name": "Computational Aspects of Robotics", 
+      "number": "COMS W4733"
+    },  
+    {
+      "department_ids": [
+        7
+      ], 
+      "id": 1921, 
+      "name": "Machine Learning", 
+      "number": "COMS W4771"
+    }, 
+    {
+      "department_ids": [
+        7
+      ], 
+      "id": 6038, 
+      "name": "Advanced Logic Design", 
+      "number": "CSEE 4823"
+    }, 
+    {
+      "department_ids": [
+        7
+      ], 
+      "id": 4956, 
+      "name": "Advanced Database Systems", 
+      "number": "COMS E6111"
+    }, 
+    {
+      "department_ids": [
+        7
+      ], 
+      "id": 2767, 
+      "name": "Topics in Computer Science: Computational Aspects of Geometric Design", 
+      "number": "COMS E6998"
+    }
+    ], 
+  "status": "success"
+}
