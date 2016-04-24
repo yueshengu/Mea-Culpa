@@ -8,7 +8,7 @@ dashboardPage(
 
   dashboardSidebar(
     sidebarMenu(id='sidebarmenu',
-                menuItem("Prfoessors",tabName="prof",icon=icon("pie-chart")),
+                menuItem("Professors",tabName="prof",icon=icon("pie-chart")),
                 menuItem("Recommendation",tabName="rec",icon=icon("pie-chart"))
                 ),
     
