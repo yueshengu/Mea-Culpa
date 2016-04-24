@@ -33,6 +33,14 @@ shinyServer(function(input, output, session) {
                 colors=brewer.pal(8, "Dark2"))  
     })
     
+    # output$prof<-renderText({
+    # 
+    #   data<-Data()[1]
+    #   name<-gsub('\\[.*|\\(.*|[[:punct:]]','',as.character(amzData$Name[amzData$ASIN==data]))
+    #   return(name)
+    # 
+    # })
+
     output$sentiment_bar_chartWorkload<-renderChart2({
       d2<-Data()[[2]]
       #browser()
@@ -48,7 +56,7 @@ shinyServer(function(input, output, session) {
       #mtdChart$yAxis(min=0,title=list(text=input$cumTrafficGraphOption))
       workload$xAxis(title=list(text="Words"),categories=as.character(d2$word),labels=list(rotation=45))
       workload$legend(enabled=F)
-      #workload$set(dom="workload")
+      workload$set(dom="workload")
       return(workload)
       
     })
@@ -65,13 +73,7 @@ shinyServer(function(input, output, session) {
     
     
     # 
-    # output$Rec1Name<-renderText({
-    #   
-    #   data<-Data()[1]
-    #   name<-gsub('\\[.*|\\(.*|[[:punct:]]','',as.character(amzData$Name[amzData$ASIN==data]))
-    #   return(name)
-    #   
-    # })
+    
     # 
     # output$profPic = renderImage({
     #   #data<-Data()[1]
