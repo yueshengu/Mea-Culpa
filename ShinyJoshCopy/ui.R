@@ -26,6 +26,14 @@ dashboardPage(
       
       
       tabItem(tabName='prof',
+####################  ADDED CODE HERE  #################################
+              fluidRow(column(width=12,htmlOutput("nugget"), textOutput("prof_name"),
+              tags$head(tags$style("#prof_name{ color: #3c8dbc; font-size: 33px; font-weight: bold; margin-bottom: 19px; margin-top: 4px;
+                                 }"
+                         )
+              )                               
+              )),
+##########################################################################
               fluidRow(
                 # column(width = 7,
                 #        box(width = NULL, solidHeader = TRUE,
@@ -44,10 +52,8 @@ dashboardPage(
                        )
                 )
                 ),
+####################  ADDED CODE HERE  #################################
               fluidRow(
-                # column(width = 7,
-                #        box(width = NULL, solidHeader = TRUE,
-                #            leafletOutput("Map"))),
                 column(width=12,
                        box(title = "Timeline of Review Sentiments", status = "primary",
                            width=NULL,solidHeader=T,
@@ -56,6 +62,7 @@ dashboardPage(
                 )
                 
                 )
+##########################################################################
       )
     )
 

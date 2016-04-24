@@ -76,3 +76,15 @@
 #Rec3TopReview{color: Black;
              font-size: 20px;
             }
+#prof_name {
+    color: #3c8dbc;
+    font-size: 50px;
+    font-weight: bold;
+    /* border: 2px #337ab7 solid; */
+    /* background-color: #337ab7; */
+    /* text-align: center; */
+    border-radius: 4px;
+    /* width: 50%; */
+    margin-bottom: 30px;
+    margin-top: 15px;
+}
