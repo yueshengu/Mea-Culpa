@@ -1,3 +1,4 @@
+[
 {
       "first_name": "Peter", 
       "id": 37, 
@@ -136,7 +137,7 @@
       "first_name": "Itshack", 
       "id": 4057, 
       "last_name": "Pe'er", 
-      "middle_name": null, 
+      "middle_name": "", 
       "nugget": "None"
     }, 
 {
@@ -150,14 +151,14 @@
       "first_name": "Luca", 
       "id": 4212, 
       "last_name": "Carloni", 
-      "middle_name": null, 
+      "middle_name": "",  
       "nugget": "None"
     }, 
     {
       "first_name": "Martha", 
       "id": 4221, 
       "last_name": "Kim", 
-      "middle_name": null, 
+      "middle_name": "",  
       "nugget": "None"
     }, 
     {
@@ -167,5 +168,5 @@
       "middle_name": "", 
       "nugget": "None"
     }
-
+]
 
