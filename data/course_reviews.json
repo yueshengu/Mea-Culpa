@@ -1,5 +1,4 @@
-{
-  "reviews": [
+[
     {
       "course_ids": [
         3807
@@ -38,8 +37,7 @@
       "workload_text": "Five HW assignments -- pretty difficult and you don't feel prepared for any of them . . . unless of course you have had experience with Computer Science before.  One midterm exam and one final exam (comprehensive), again , difficult if you have no background.  He does curve grades.  "
     }, 
     {
-      "course_ids": [
-        2598, 
+      "course_ids": [ 
         3807
       ], 
       "created": "Wed, 24 Dec 2003 00:00:00 GMT", 
@@ -424,10 +422,9 @@
       "workload_text": "1 programming assignment every other week (10 hours give or take 2 or 3), 1 homework every other week (1-3 hours), 1 midterm, 1 final. Midterm is multiple choice, definitions, a section of code to debug, and an algorithm with questions about it. Final from what I understand (class isn't finished yet) is the same as midterm with more multiple choice."
     }, 
     {
-      "course_ids": [
-        2906, 
-        3807, 
-        4758
+      "course_ids": [ 
+        3807 
+        
       ], 
       "created": "Thu, 11 Oct 2012 14:24:29 GMT", 
       "id": 27577, 
@@ -487,8 +484,7 @@
     }, 
     {
       "course_ids": [
-        3807, 
-        6732
+        3807
       ], 
       "created": "Wed, 21 May 2014 18:22:38 GMT", 
       "id": 29519, 
@@ -1059,8 +1055,7 @@
       ], 
       "review_text": "Professor Cannon is an awesome teacher. The class has a really heavy workload, though. Most of what he teaches in class is in the book, but he clarifies it and makes it easier to understand. You have to learn all of Java code on your own though and it can be really frustrating because many times you won't know where to start. The TAs are EXTREMELY helpful, though. I highly recommend that you go to office hours at least once a week because they usually teach you Java concepts and code. The class may be hard and the workload tough, but its a class worth taking because you learn A LOT. ", 
       "workload_text": "There are 6 homeworks-but each homework has two parts, theory and programming. The theory is due a week from when it was assigned, and the programming is due two weeks after it was assigned. The workload is pretty fair in the beginning of the semester, but it gets heavy with the third homework.\nMidterm and final--hard but okay if you study well."
-    }, 
-    {}, 
+    },  
     {
       "course_ids": [
         2906
@@ -1193,7 +1188,6 @@
       "review_text": "Bert covered almost exactly what was in the textbook in his lectures--the most useful part of the lectures was that he read the textbook much more carefully than you did, so whenever he found something he found confusing, he expanded on it.  He also decided to cover some material that wasn't in the textbook (networking), so before deciding to skip all of his lectures and just teach yourself the material from the textbook which is generally pretty possible, look at the course web page to make sure that he isn't covering something that isn't in the textbook in lecture, because it will be a pain in the ass to try to search it on the internet.  On the other hand, his slideshows are pretty complete and he posts them on the course page.", 
       "workload_text": "5 programming projects, from 4-5-ish hours to 10 hours, depending upon how cleverly you use the design tools they teach you, and whether you are any good at programming.  There are also written problems, which if you read the textbook are borderline trivial.  The textbook (Object-Oriented Design & Patterns by Horstmann) is pretty readable, but not strictly necessary to read that closely if you attend lectures.  It is worth your time to go to office hours, and Bert's office hours tend to be better than the TA's."
     }, 
-    {}, 
     {
       "course_ids": [
         2906
@@ -1328,9 +1322,7 @@
     }, 
     {
       "course_ids": [
-        2906, 
-        3807, 
-        4758
+        2906
       ], 
       "created": "Thu, 11 Oct 2012 14:24:29 GMT", 
       "id": 27577, 
@@ -1510,8 +1502,7 @@
     }, 
     {
       "course_ids": [
-        4, 
-        26
+        4
       ], 
       "created": "Fri, 24 Apr 2009 17:22:56 GMT", 
       "id": 22618, 
@@ -2075,9 +2066,7 @@
       "workload_text": "A lot because the instructions are unclear and the code he gives is always buggy. Labs can take 10 hours because of this, when in reality the level of difficulty and length should require about 4 hours."
     }, 
     {
-      "course_ids": [
-        2906, 
-        3807, 
+      "course_ids": [ 
         4758
       ], 
       "created": "Thu, 11 Oct 2012 14:24:29 GMT", 
@@ -2209,8 +2198,7 @@
       "workload_text": "Heavy. 10 labs, 1 optional, 7 free-form late days, no more than 2 per lab. \r\n2 midterms, 1 final, all impressively crazy. \r\n\r\nI wouldn't take this and Data Structures at the same time if you're looking to take your programming skills to the next level. Both professors warned me not to do it; I did it anyway and I managed to survive, but I was only taking 10 credits. Still I wouldn't recommend it. Take 3134 or the honors Data Structures first before taking this class if possible."
     },
     {
-      "course_ids": [
-        256, 
+      "course_ids": [ 
         397
       ], 
       "created": "Sat, 01 Jan 2000 00:00:00 GMT", 
@@ -2223,8 +2211,7 @@
     }, 
     {
       "course_ids": [
-        397, 
-        1622
+        397
       ], 
       "created": "Sat, 01 Jan 2000 00:00:00 GMT", 
       "id": 581, 
@@ -3277,8 +3264,7 @@
       ], 
       "review_text": "Martha is one of the nicest professors I have met here. She takes the time to try to help out students, wants to know their names, and tries really hard to be available. That being said, she is a new professor to Columbia, and it shows. Homework lengths varied greatly, and she often seemed surprised that things took as long as they did. She corrects herself in class so many times that it is hard to know what the conclusion is when she is finished. The midterm exam, for example, arrived nearly 20 minutes late since there was an issue with the printer. Why not print it out the day before? The average on the midterm was a 50%, and she seemed happy with that (I think it was higher than last year's). Hopefully with some more experience some of these rough edges will go away, as she has a lot of potential. A friend who took this class both with her and Rubinstein said that it is definitely better to take it with her.", 
       "workload_text": "6 HWs (40%), of varying time requirements and difficulty with the lowest score dropped. One midterm (30%) and a final (30%) which is non-cumulative. Exams are open book, but that doesn't mean that they are easy."
-    }, 
-    {}, 
+    },  
     {
       "course_ids": [
         4251
@@ -3605,8 +3591,7 @@
     }, 
     {
       "course_ids": [
-        664, 
-        4956
+        664
       ], 
       "created": "Tue, 04 Mar 2008 00:00:00 GMT", 
       "id": 21025, 
@@ -4891,7 +4876,6 @@
     }, 
     {
       "course_ids": [
-        4035, 
         4079
       ], 
       "created": "Wed, 23 Apr 2014 04:33:25 GMT", 
@@ -4940,8 +4924,7 @@
     }, 
     {
       "course_ids": [
-        462, 
-        2287
+        462
       ], 
       "created": "Mon, 15 Nov 2004 00:00:00 GMT", 
       "id": 9661, 
@@ -5358,12 +5341,7 @@
       ], 
       "review_text": "Pros: I thought the assignments were good, but super time consuming and there was one every week, that will squeeze all the time out of you, but in a way you learn.\r\n\r\nMidterm fair and final was ok. Grading was reasonable.\r\n\r\nCons:\r\nThe worst classroom delivery I have ever seen in my entire life including school anywhere. Machine learning is no doubt fascinating but does require some foundation, but his classroom delivery is some of the worst I have ever seen, stammering, stuttering, is ok for CS 101, in a community college but totally unacceptable for a graduate level course in such a esteemed institution where the pay for professors is high and the fees are exorbitant.\r\n\r\nOn top of his inaudible and cringe inducing voice the material is complex but no doubt interesting. Professor needs to desperately address this and take a look at videos of himself on how to improve for future classes or otherwise just stay a researcher and not lecture.\r\n\r\nJust look at the how well Andrew Ng did his course in Coursera on Machine Learning.\r\n\r\nBecause of the above it felt a waste of the money we spend on course here. I think Jebara would be much better, understandable and you would feel your moneys worth.\r\n\r\nBut if you can bear and listen to him maybe the course is made for you.\r\n", 
       "workload_text": "Pretty tough but fair I thought for the scope of this course."
-    }
-  ], 
-  "status": "success"
-}
-{
-  "reviews": [
+    },
     {
       "course_ids": [
         6038
@@ -5375,15 +5353,9 @@
       ], 
       "review_text": "Nowick puts a lot of effort in this course and he is very disciplined, organized and nice person. However, be prepared to spend ample of time on projects and homeworks if you are planning to take this course. He doesn't make jokes in the class and not a very dynamic professor. Another negative side is, sometimes he will just introduce with a new topic briefly and then he will make suck a homework problem or project that you will need to learn everything by yourself to confront it. Having said that, he is very approachable and if you are lucky then you might get some good TAs to use some help from them. I would say, it's not a dead hard course and it's possible to get good grades if you work hard. Also, if you are good with logic design fundamentals then it will be smooth. \r\n\r\nIf anyone is interested to work on digital logic design/ hardware design, then I would recommend to take this course. ", 
       "workload_text": "5 homeworks, one final project, midterm, final (we had to do 2 projects and 4 homeworks).  "
-    }
-  ], 
-  "status": "success"
-}
-{
-  "reviews": [
+    },
     {
-      "course_ids": [
-        664, 
+      "course_ids": [ 
         4956
       ], 
       "created": "Tue, 04 Mar 2008 00:00:00 GMT", 
@@ -5393,8 +5365,7 @@
       ], 
       "review_text": "Professor Gravano is tied for my favorite computer science professor.  He generally follows quality texts in his lectures and easily outperforms them in terms of the ease with which the material is presented.  His homeworks and exams are reasonably challenging but also completely fair -- don't worry if you get a 60% on an exam because it will come out in the curve.\r\n\r\nFurthermore, he always knows what he's talking about (more than some professors) as a result of an expansive knowledge of all aspects of databases thus far.  Now that I have gotten to know him better, it seems this stems from a more passionate interest in the subject than I've seen with others in their respective fields and it leads to a genuine desire to help students really master the material.\r\n\r\nI would definitely recommend taking the 6111 course if 4111 was at all interesting.", 
       "workload_text": "Reasonable workload, but group projects are easily do-\r\nable on one's own.  Homeworks can be tricky and are a fair extension of concepts in class.  Exams are generally pretty difficult, but it shows in the curve."
-    }, 
-    {}, 
+    },  
     {
       "course_ids": [
         4956
@@ -5431,6 +5402,5 @@
       "review_text": "A really interesting computer graphics class with an amazing professor. In this class, we are given a glimpse to the realm of geometry modeling and geometry processing. As we live in the age that artists and product designers utilize 3D software such as Rhino or Maya or ZBrush, to digitally model their products before actualization into tangible objects, or to model cartoon characters that would appear in animated films, this class provides a great introduction into the technical aspects of how these 3D softwares work or should work. We study the fundamentals down to the level of so-called NURBS curves and surfaces, geometry processing performed on triangle meshes, and subdivision surfaces -- each with extensive mathematical backgrounds that consider how these structures give artists and manufacturers computational advantages such as desired degree of smoothness no matter what shape of the curves/surfaces are formed. It is a really fun experience to learn how design softwares are actually made of, and we also had a guest speaker from the industry to discuss how he actually uses the software to design real-world products.\r\n\r\nSo the class covers mainly three parts: the fundamentals of B-Spline curves and surfaces (as well as NURBS and Rational form), geometry processing (in particular, mesh data structures and mesh simplification algorithms), and Subdivision surfaces (e.g., Catmull-Clark). Each topic has extensive assignments associated with it to help us see how things are implemented. Some are really challenging, but Prof. Reed would give us extensions if needed. So we always have time to refine our assignments as possible. I'd say I'm very proud of the code I have done for this class, since they never look like a mess compared to other classes that I sometimes rush things through just to make it work. It's so organized, and beautiful.\r\n\r\nSpeaking of the professor, he is probably one of the best professors I've had for Computer Science class, personality-wise. He really took time to answer individual emails and discussion threads. He modified his assignments plan as the semester went, so we were given more challenging works since we did well as a class on the first few assignments, which helped me to learn even more. He was very approachable during his office hours or after class. So in a sense, you never feel isolated or helpless in this class. The only caveat is that his lectures sometimes may be a bit dry, but bare with them, and you will go a long way.\r\n\r\nSo, even with a slight interest in computer graphics in general, I'd recommend you to come and take the class, and you will be amazed how much you learn and have fun at the end.", 
       "workload_text": "3 Assignments, each covering main topic in the class, as mentioned above.\r\n\r\nIn actuality, it feels more like 6 assignments. The B-Spline one will be split into 3 parts, while the geometry processing is split into 2 parts. However, they aren't equal in length. Some will be shorter; others will be longer.\r\n\r\n1 Midterm. 1 Final. Totally reasonable and manageable."
     }
-  ], 
-  "status": "success"
-}
+  ]
+ 
