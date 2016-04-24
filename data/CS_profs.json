@@ -1,6 +1,6 @@
 [
 {
-  "course_ids": , 
+  "course_ids": "", 
   "created": "Sat, 01 Jan 2000 00:00:00 GMT", 
   "id": 43, 
   "professor_ids": 
@@ -161,8 +161,6 @@
   "id": 23669, 
   "professor_ids": 
     37, 
-    10049
-    , 
   "review_text": "I took Data Structures & Algorithms during the Fall 2009 semester, which was taught by Peter Allen.\r\n\r\nThe Course:\r\n   On the whole, I think Data Structures & Algorithms is a great course that gives CS students a solid grounding in how to think about solving computational problems in ways that are efficient with respect to time complexity and memory usage.  While I learned a lot from this class, I think it would have been possible to make it slightly more advanced than it was.  There was a fair amount of overlap with the data structures component of COMS 1007 and, in my opinion, not enough time was spent on learning more complicated algorithms and data structures.  Nevertheless, at this point, I feel that I have a solid understanding of all basic and intermediate DSA, which is of course extremely critical to success in CS.  My only other complaints about this class are that the homework assignments were a bit too easy (or at least were graded as such) and that the programming assignments all required GUIs, which ended up requiring more time and effort to implement than the algorithms themselves.\r\n\r\nThe Professor:\r\n   Professor Allen is an excellent lecturer who does a great job of making sure that the concepts that he's presenting are clear and that the students have thorough exposure to how a particular algorithm works.  I read an earlier review that said that Professor Allen can be an asshole who berates students for asking questions/giving answers.  While I must say that there were a couple exchanges that Professor Allen handled in a bit of a confrontational way, I think this was unintentional, and I think he really does care about his students and their success.  He is also a very funny guy, so I think sometimes his humor is such that his jokes could be construed as reproaches.  He is very helpful both in office hours and over email.  Additionally, his handouts are so fantastic that I anticipate using them as reference materials for years to come.\r\n\r\nThe TAs:\r\n   While generally I don't think a TA's contribution to a class merits review (positive or negative), I believe that Dan Federman warrants an exception (positive).  First of all, as a recitation instructor, Dan was very good at both reviewing things that Professor Allen had gone over during lecture as well as delving deeper into certain topics that were either not discussed at all in lecture or were merely glossed over.  In addition, I found Dan's recitations to be extremely helpful when it came to clarifying the details of our various assignments.  DSA required every assignment to be implemented with a GUI, which could have proven to be exceedingly burdensome were it not for Dan's ability to explain the finer points of Java AWT/Swing.  Dan's recitations were effective not only as a consequence of his intelligence and knowledge of the subject, but also because of his ability to present material in a very dynamic and engaging way.  Secondly, from an administrative standpoint, Dan was incredibly responsive when it came to fielding questions about the logistics or the substance of the course.  Finally, Dan made a point of putting the class into a \"real-world\" context by discussing the kinds of applications the various data structures might have or by going over what sorts of DSA-related questions might come up in interviews.  This information is invaluable and was extremely helpful.  I am taking CS classes at Columbia as a postbac, and so I have had plenty of experiences with TAs as points of comparison.  Having said that, I can honestly say that Dan is as effective a TA as any I have had in my academic career.", 
   "workload_text": "The workload was very manageable.  6 assignments which were fairly easy but still took a little while to do (40% of your overall grade), a medium-difficulty midterm (25%), and a medium/easy final (35%)."
 }, 
@@ -478,7 +476,7 @@
   "review_text": "At first, he seemed like a very professional, no-nonsense sort of teacher who would teach a lot but give the most boring lectures ever.\n\nIn reality, he is a very professional, no-nonsense sort of teacher with the most entertaining lectures ever. You learn a lot and have a bit of fun with the class too. \n\nGreat intro to the CS department. He's a great professor.", 
   "workload_text": "5 Assignments, 1 Midterm, 1 Final"
 }, 
-{}, 
+ 
 {
   "course_ids": 
     2906
@@ -780,7 +778,7 @@
   "workload_text": "Normal if you and your teammates are damn good in \"C\" and kernel programming, and heavy otherwise."
 },
 {
-  "course_ids": , 
+  "course_ids": "", 
   "created": "Sat, 01 Jan 2000 00:00:00 GMT", 
   "id": 53, 
   "professor_ids": 
@@ -924,8 +922,6 @@
 {
   "course_ids": 
     664, 
-    4956
-    , 
   "created": "Tue, 04 Mar 2008 00:00:00 GMT", 
   "id": 21025, 
   "professor_ids": 
@@ -946,7 +942,7 @@
   "review_text": "Professor Gravano is a phenomenal instructor. He presents the material so clearly that at times you'll be bored to death because everything seems so simple! Don't be fooled, though -- this is only because he teaches so well (I made the mistake of being lulled into a state of overconfidence and skipped out on a few lectures, and I'm paying for it now just before the final!). \r\nGravano clearly knows his stuff and can answer any question you might have - if you ever have a doubt, don't hesitate to ask him a question because after he's through explaining, you'll wonder how you were *ever* confused.", 
   "workload_text": "Two group projects (two teammates) - quite time-consuming, but definitely help you learn the material\r\nFour homework assignments - tough but fair and good for learning the material (which is useful because these are good indications of exam questions!)\r\nA midterm and a final - if you attend lectures and review all of the concepts before taking them, you'll be fine. I've heard the curve is great, too."
 }, 
-{}, 
+ 
 {
   "course_ids": 
     664
@@ -1079,7 +1075,7 @@
   "review_text": "Professor Cannon was one of my favorite instructors at Columbia. He's really nice, and he makes learning about what some consider to be a difficult subject much more easy. During his first lecture, Professor Cannon said that students shouldn't be intimidated by the fact that he works at Los Almos because he \"isn't creating Terminator.\" Definitely an interesting class, I learned a lot to prepare me for 1004", 
   "workload_text": "about 7 homework assignments, text reading, midterm, final"
 }, 
-{}, 
+ 
 {
   "course_ids": 
     397
@@ -1488,7 +1484,7 @@
   "review_text": "You've always wondered if you're secretly the next Mark Zuckerberg waiting to be unleashed. I suppose this is the class for you. You can do well, but I wouldn't say it's an easy A or B. For that, take astronomy. Don't consider taking this as a P/F, as then it won't fulfill prereqs. Drat.\r\n\r\nCannon is excited, smart and a pretty good teacher; it's hard to deny that. But he bizarrely spends more than half of the class lecturing on the basic components of computers and the capital-i Internet. Then he spends a lesson or two each on databases, SQL, XML and Python. Cannon prides himself on this tactic as it keeps students in the class past the drop date; he shouldn't. It should be reversed. Students learned little of import for the first half and either imploded or relied on prior ability for the second half. The workload seemed appropriate, however.\r\n\r\nKnowledge of programming and math isn't necessary, but will give you a major leg up.\r\n\r\nDon't forget office hours or TAs like I did. And spend time early on to make sure you ace the comparatively easy first few assignments. I failed the final, and this kinda saved my grade.\r\n\r\nNote: this class was previously known as Introduction to Computers.", 
   "workload_text": "1. 4 problem/hw sets every 2-3 weeks. Increasing difficulty. 40% of grade.\r\n2. An in-class midterm (fairly easy) and final (moderately difficult, on last day of class). Average grades were low Bs. 30% of grade each.\r\n3. Final hw assignment was a difficult Python program.\r\n\r\nFor new CS students, average at least a few hours of reading per week. Little to no extra credit."
 }, 
-{}, 
+ 
 {
   "course_ids": 
     3807
@@ -2391,7 +2387,7 @@
   "review_text": "Rubenstein definitely takes these reviews seriously, and has improved dramatically. Don't worry about his old, negative culpa reviews, because the he is nothing like that. He is one of the best professors I have had at Columbia in CS. After having taken both Fundamentals and Networks with him, I highly recommend him.\r\n\r\nHis lectures are spread between writing on the board and going over lecture slides that the textbook made. Both are pretty good, but when he writes on the board, he can go really fast. If you don't want to fall behind in class when he's writing on the board, don't copy everything down (though I did, and I often got lost). Listen though and ask questions. The textbook might serve as a good resource. I referred to it several times, but you could probably get away with just using Wikipedia. There's no assigned reading but he does cover nearly everything in the textbook (and more).\r\n\r\nHomeworks are reasonable. The first two programs are the hardest, but after that they just get easier (and even easier still). Do yourself a favor and do them in Java, trying to do the noble thing and programming in C just won't cut it. The first program will take 40+ hours in C, or 10 hours in Java. Your choice. You have plenty of time for the programs. The separate theory homeworks are assigned with only 1 week to do them (sometimes concurrently with the programs), so if you don't start early they can be tough.\r\n\r\nHis tests and theory problems work the same way. You learn the basic concepts in the class. Then you're asked questions that rearrange problems to something you've never seen before and are something that was covered in class. The only way you can do well is if you have a strong understanding of the material (obviously).\r\n\r\nHe is a fair/generous grader and a nice guy if you go to his office hours. Listen, ask questions in class, start the programs relatively early (and do them in Java!), know the concepts and you'll do fine. Usually the class has a low average too.\r\n\r\nDo take this course even if it's not required for your track. Unlike some CS classes, the material is actually interesting and relevant to so many things. No abstract theoretical stuff that you can't relate to anything. All in all, an excellent course and excellent professor.", 
   "workload_text": "4 programs (they get easier as the semester progresses)\r\n4 theory assignments (some easier than others)\r\n1 midterm (too long)\r\n1 final (reasonable, though tricky)"
 }, 
-{}, 
+ 
 {
   "course_ids": 
     4251
@@ -2584,7 +2580,7 @@
   "review_text": "The premise of Computer Graphics class is to understand the fundamentals and principles of graphics. How we perceive the world in perspective; how we understand surfaces, shape transformations, and shadows interacting with light sources; how we manage to get millions of triangles described in a text file to be displayed nicely as Nemo in 3D model; how we render stunning images from a merely text file; they are all in one class. I cannot believe I have accomplished so much in one semester, and this class is simply one of the best class at Columbia that exceeds tuition fee that I pay for. In this class you will be exposed to pretty much everything in graphics pipeline. The awesome part is that you gotta have to sit down and implement real graphics program from scratch. It is a great class to let you see how technology and art can strengthen each other. And who wouldn't like a class that he/she can enjoy the two at the same time?\r\n\r\nEnough said with the class. Prof. Grinspun himself is also an extraordinary teacher. With his exclusive background in math, you will blow your mind to let you see how much graphics and math are inter-connected. In addition, because he is an excellent teacher who explains things from the perspective of someone who knows little about the subject, you can't go wrong with the materials. His humor and energetic teaching style will also motivates you to engage in the class, even if it is two hour class straight at night. There were multiple guest lectures, which feature people from the real industry, like NVIDIA for example, to talk about the technologies that people are engaging out there. After you have taken the class, you are sufficiently well-rounded in graphics.\r\n\r\nThe assignments are heavy. It is pain in the ass; it is self-tortured at times, but the reward can give you a life-time inspiration. My favorite part is that you will have chances to do something creative and get credits for them. By the end of the semester, you have more than flourished programming skills, but also motivation to create digital arts in your own way. Highly recommended class for anyone who's interested in graphics.", 
   "workload_text": "About ten assignments. Each one varies in length, but most of them are time-consuming but not impossible. Prepare to have a solid background in C++ and a good sense of math, and you will go a long way without banging your heads several times a week like me."
 }, 
-{}, 
+ 
 {
   "course_ids": 
     2634
