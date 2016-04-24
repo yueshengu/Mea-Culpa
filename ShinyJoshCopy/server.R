@@ -24,12 +24,13 @@ shinyServer(function(input, output, session) {
       d2$sentiment <- ifelse(d2$score<=-1, "Negative", d2$sentiment)
       d2$sentiment<-factor(d2$sentiment,levels=c('Positive','Neutral','Negative'))
       
-      ############ added ##################
+      ############ ADDED CODE HERE ##################
       d3 = data.frame(date = profData$created, score = profData$review_score)
-      ############ added ##################
+      d4 <- profData$nugget[1]
       
       
-      return(list(profData,d2, d3))
+      return(list(profData,d2, d3, d4))
+      ###############################################
     })
     
     output$sentiment_cloud <- renderPlot({
@@ -59,14 +60,32 @@ shinyServer(function(input, output, session) {
       
     })
 
-    ############ ADDED ################################
+    ################### ADDED CODE HERE ############################
+    
+    # Also, I edited the UI.R code and added images to the www folder
     output$review_dygraph <- renderDygraph({
       d3<-Data()[[3]]
       
       series <- xts(d3$score, order.by = d3$date, tz="GMT")
       dygraph(series, xlab = "Date", ylab = "Sentiment Score") %>% dyRangeSelector() %>% dyOptions(useDataTimezone = TRUE, fillGraph = TRUE) %>% dySeries("V1", label = "Sentiment Score") %>% dyLegend(show = "always", hideOnMouseOut = FALSE)
     })
-    ############ ADDED ################################
+
+    output$prof_name = renderText({
+      paste("Professor ", input$profName)
+    })
+    
+    output$nugget <- renderUI({
+      d4<-Data()[[4]]
+      if(d4 == "Gold"){
+        HTML("<img src='gold1.png' align = 'center', style='width: 79px; float: left; margin-right: 16px; margin-left: 4px; height: 60px;'>")
+      } else if(d4 == "Silver"){
+        HTML("<img src='silver1.png' align = 'center', style='width: 79px; float: left; margin-right: 16px; margin-left: 4px; height: 60px;'>")
+      } else {
+        HTML("<img src='no_nugget.png' align = 'center', style='width: 69px; float: left; margin-right: 13px; margin-left: 4px; height: 53px;'>")
+      }
+    })
+    
+    #####################################################
     # output$sentiment_bar_chartWorkload<-renderPlot({
     #   d2<-Data()[[2]]
     #   #browser()
