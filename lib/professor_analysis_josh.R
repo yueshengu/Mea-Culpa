@@ -3,6 +3,7 @@ setwd("/Users/Josh/Documents/Spring2016/DataScience/Project5/finalproject-p5-tea
 #################### Load Libraries ##################
 
 library("RJSONIO")
+library("dplyr")
 
 #################### Prepare Data ####################
 
@@ -13,3 +14,171 @@ colnames(professors) <- c("first_name", "id", "last_name", "middle_name", "nugge
 prof_reviews <- fromJSON("../data/CS_profs.json")
 prof_reviews <- matrix(unlist(prof_reviews), ncol = 6, byrow = TRUE)
 colnames(prof_reviews) <- c("course_ids", "created", "id", "professor_ids", "review_text", "workload_text")
+
+library(tm)
+library(SnowballC)
+library(RWeka)
+
+combined<-readRDS("../data/prof_combined_sentiment.rds")
+corpus <- Corpus(VectorSource(combined$workload_text))
+docs <- tm_map(corpus, removePunctuation) 
+docs <- tm_map(docs, removeNumbers) 
+docs <- tm_map(docs, tolower)
+docs <- tm_map(docs, removeWords, stopwords("english"))
+docs <- tm_map(docs, stemDocument)  
+docs <- tm_map(docs, stripWhitespace)
+docs <- tm_map(docs, PlainTextDocument)
+tdm <- TermDocumentMatrix(docs)
+dtm <- DocumentTermMatrix(docs)
+
+options(mc.cores=1)
+
+#Tokenizer for n-grams and passed on to the term-document matrix constructor
+BigramTokenizer <- function(x) NGramTokenizer(x, Weka_control(min = 2, max = 3))
+BigramTokenizer <- function(x) {RWeka::NGramTokenizer(x, RWeka::Weka_control(min = 2, max = 2))}
+
+txtTdmBi <- TermDocumentMatrix(docs, control = list(tokenize = BigramTokenizer))
+freq <- sort(colSums(as.matrix(dtm)), decreasing=TRUE)
+
+
+terms<-findFreqTerms(txtTdmBi, lowfreq=5, highfreq=Inf)
+
+#temp<-as.vector(combined$review_score)
+#temp2<-combined$workload_score
+#combined<-combined[,1:9]
+#combined$review_score <- temp
+#combined$workload_score <- temp2
+#summary(combined)
+
+###################   Sentiment  #############################
+score.sentiment <- function(sentences, pos.words, neg.words, .progress='none') {
+  require(plyr)
+  require(stringr)
+  scores = laply(sentences, function(sentence, pos.words, neg.words) {
+    sentence <- gsub("&amp", "", sentence)
+    sentence <- gsub("[^[:alnum:]///' ]", "", sentence)
+    sentence <- gsub('[[:punct:]]', '', sentence)
+    sentence <- gsub('[[:cntrl:]]', '', sentence)
+    sentence <- gsub('\\d+', '', sentence)
+    sentence <- tolower(sentence)
+    word.list <- str_split(sentence, '\\s+')
+    words <- unlist(word.list)
+    pos.matches <- match(words, pos.words)
+    neg.matches <- match(words, neg.words)
+    pos.matches <- !is.na(pos.matches)
+    neg.matches <- !is.na(neg.matches)
+    score <- sum(pos.matches) - sum(neg.matches)
+    return(score)
+  }, pos.words, neg.words, .progress=.progress)
+  scores.df <- data.frame(score=scores)
+  return(scores.df)
+}
+
+#############################################################
+
+
+########### Shiny ###################
+
+library(wordcloud)
+library(tm)
+library(SnowballC)
+library(RWeka)
+library(plyr)
+library(ggplot2)
+#wordcloud_rep <- repeatable(wordcloud)
+
+output$sentiment_cloud <- renderPlot({
+    combined<-readRDS("../data/prof_combined_sentiment.rds")
+    corpus <- Corpus(VectorSource(combined$workload_text))
+    docs <- tm_map(corpus, removePunctuation) 
+    docs <- tm_map(docs, removeNumbers) 
+    docs <- tm_map(docs, tolower)
+    docs <- tm_map(docs, removeWords, stopwords("english"))
+    docs <- tm_map(docs, stemDocument)  
+    docs <- tm_map(docs, PlainTextDocument)
+    tdm <- TermDocumentMatrix(docs)
+    
+    options(mc.cores=1)
+    BigramTokenizer <- function(x) NGramTokenizer(x, Weka_control(min = 2, max = 2))
+
+    txtTdmBi <- TermDocumentMatrix(docs, control = list(tokenize = BigramTokenizer))
+    m = as.matrix(txtTdmBi)
+    v = sort(rowSums(m),decreasing=TRUE)
+    d = data.frame(word = names(v),freq=v)
+    wordcloud(words = d$word,freq = d$freq, scale=c(5,0.1), random.order = F, rot.per=0.35, colors=brewer.pal(8, "Dark2"))  
+})
+
+output$sentiment_bar_chart <- renderPlot({
+
+  pos.words <- scan('../data/positive-words.txt', what='character', comment.char=';')
+  neg.words <- scan('../data/negative-words.txt', what='character', comment.char=';')
+  combined<-readRDS("../data/prof_combined_sentiment.rds")
+  
+    corpus <- Corpus(VectorSource(combined$workload_text))
+    docs <- tm_map(corpus, removePunctuation) 
+    docs <- tm_map(docs, removeNumbers) 
+    docs <- tm_map(docs, tolower)
+    docs <- tm_map(docs, removeWords, c("take", "assignments", "every", "computer", "cs", "professor", "dont", "prof", "first", "programming"))
+    docs <- tm_map(docs, removeWords, stopwords("english"))
+    docs <- tm_map(docs, stemDocument)  
+    docs <- tm_map(docs, PlainTextDocument)
+    tdm <- TermDocumentMatrix(docs)
+    
+    options(mc.cores=1)
+    BigramTokenizer <- function(x) NGramTokenizer(x, Weka_control(min = 2, max = 2))
+
+    txtTdmBi <- TermDocumentMatrix(docs, control = list(tokenize = BigramTokenizer))
+    m = as.matrix(txtTdmBi)
+    v = sort(rowSums(m),decreasing=TRUE)
+    d = data.frame(word = names(v),freq=v)
+  
+  d$score <- score.sentiment(d$word, pos.words, neg.words, .progress="text")
+  d$sentiment <- rep(0)
+  d$sentiment <- ifelse(d$score>=1, "Positive", d$sentiment)
+  d$sentiment <- ifelse(d$score==0, "Neutral", d$sentiment)
+  d$sentiment <- ifelse(d$score<=-1, "Negative", d$sentiment)
+
+  subset(d[1:50,])%>%
+    ggplot(aes(x=word, y=freq, fill=sentiment)) +
+    geom_bar(stat="identity", colour="white") +
+    theme(axis.text.x=element_text(angle=45, hjust=1)) + ylab("Frequency") + xlab("Word") +
+    scale_fill_manual(values=c("#990000", "#003399", "#339933"))
+
+})
+
+output$sentiment_bar_chart2 <- renderPlot({
+
+    pos.words <- scan('../data/positive-words.txt', what='character', comment.char=';')
+    neg.words <- scan('../data/negative-words.txt', what='character', comment.char=';')
+    combined<-readRDS("../data/prof_combined_sentiment.rds")
+  
+    corpus <- Corpus(VectorSource(combined$review_text))
+    docs <- tm_map(corpus, removePunctuation) 
+    docs <- tm_map(docs, removeNumbers) 
+    docs <- tm_map(docs, tolower)
+    docs <- tm_map(docs, removeWords, stopwords("english"))
+    docs <- tm_map(docs, stemDocument)  
+    docs <- tm_map(docs, PlainTextDocument)
+    tdm <- TermDocumentMatrix(docs)
+    
+    options(mc.cores=1)
+    BigramTokenizer <- function(x) NGramTokenizer(x, Weka_control(min = 2, max = 2))
+
+    txtTdmBi <- TermDocumentMatrix(docs, control = list(tokenize = BigramTokenizer))
+    m = as.matrix(txtTdmBi)
+    v = sort(rowSums(m),decreasing=TRUE)
+    d = data.frame(word = names(v),freq=v)
+  
+  d$score <- score.sentiment(d$word, pos.words, neg.words, .progress="text")
+  d$sentiment <- rep(0)
+  d$sentiment <- ifelse(d$score>=1, "Positive", d$sentiment)
+  d$sentiment <- ifelse(d$score==0, "Neutral", d$sentiment)
+  d$sentiment <- ifelse(d$score<=-1, "Negative", d$sentiment)
+
+  subset(d[1:50,])%>%
+    ggplot(aes(x=word, y=freq, fill=sentiment)) +
+    geom_bar(stat="identity", colour="white") +
+    theme(axis.text.x=element_text(angle=45, hjust=1)) + ylab("Frequency") + xlab("Word") +
+    scale_fill_manual(values=c("#990000", "#003399", "#339933"))
+
+})
