@@ -512,7 +512,7 @@
       , 
       "created": "Tue, 09 Dec 2014 06:32:37 GMT", 
       "id": 65736, 
-      "professor_ids": , 
+      "professor_ids": "", 
       "review_text": "You'll spend half of the class learning Java, which is pretty easy if you put time into it. The other half is more theoretical, though it shouldn't be a big problem if you're competent in math.\r\n\r\nThe workload is manageable. Again, the amount of time you'll spend outside of class studying and working on the problem sets really depends on 1) your aptitude in math, which many CC/GS kids - I'm sorry to say - lack, but more importantly, 2) how much you enjoy CS and learning about algorithmic thinking and problem solving. If you fit into both categories, you'll breeze through this class; if you're merely good at math but spend no time studying, you can expect to get a B-/B, and if you're not so good at math but really enjoy the subject or spend a shit ton of time studying, you can probably walk out with at least an A-.", 
       "workload_text": "6 problem sets and 6 programming projects\r\nA very easy midterm (for me anyway) and probably a slightly more difficult final "
     }, 
