@@ -23,8 +23,84 @@ shinyServer(function(input, output, session) {
       d2$sentiment <- ifelse(d2$score==0, "Neutral", d2$sentiment)
       d2$sentiment <- ifelse(d2$score<=-1, "Negative", d2$sentiment)
       d2$sentiment<-factor(d2$sentiment,levels=c('Positive','Neutral','Negative'))
-      return(list(profData,d2))
+      
+      d3 = data.frame(date = profData$created, score = profData$review_score)
+      d4 <- profData$nugget[1]
+      
+      
+      class_emo=classify_emotion(prof$review_text[prof$profName==input$profName],algorithm="bayes",
+                                 prior=1.0)
+      # get emotion best fit
+      emotion = class_emo[,7]
+      # substitute NA's by "unknown"
+      emotion[is.na(emotion)] = "unknown"
+      
+      # classify polarity
+      class_pol = classify_polarity(prof$review_text[prof$profName==input$profName],algorithm="bayes")
+      # get polarity best fit
+      polarity = class_pol[,4]
+      
+      # data frame with results
+      sent_df = data.frame(text=prof$review_text[prof$profName==input$profName],emotion=emotion,
+                           polarity=polarity, stringsAsFactors=FALSE)
+      # sort data frame
+      sent_df = within(sent_df,
+                       emotion <- factor(emotion, levels=names(sort(table(emotion), decreasing=TRUE))))
+      
+      emos = levels(factor(sent_df$emotion))
+      nemo = length(emos)
+      emo.docs = rep("", nemo)
+      
+      for (i in 1:nemo){
+        tmp = prof$review_text[prof$profName==input$profName][emotion == emos[i]]
+        emo.docs[i] = paste(tmp, collapse=" ")
+      }
+      
+      # remove stopwords
+      emo.docs = removeWords(emo.docs, stopwords("english"))
+      emo.docs = removeWords(emo.docs, c("group", "final.", "final", "disgusting"))
+      # create corpus
+      corpus = Corpus(VectorSource(emo.docs))
+      corpus <- tm_map(corpus, removePunctuation) 
+      corpus <- tm_map(corpus, removeNumbers) 
+      tdmReview = as.matrix(TermDocumentMatrix(corpus,control=list(wordLengths=c(0,Inf))))
+      colnames(tdmReview) = emos
+      #browser()
+      if(ncol(tdmReview)>=2) tdmReview<-tdmReview[rev(order(rowSums(tdmReview))),][1:50,]
+      else {
+        tdmReview<-data.frame(tdmReview[rev(order(rowSums(tdmReview))),][1:50])
+        colnames(tdmReview) = emos
+        
+      }
+      #browser()
+      
+      return(list(profData,d2,tdmReview,emos,d3,d4))
     })
+    
+    
+    # Also, I edited the UI.R code and added images to the www folder
+    output$review_dygraph <- renderDygraph({
+      d3<-Data()[[5]]
+      
+      series <- xts(d3$score, order.by = d3$date, tz="GMT")
+      dygraph(series, xlab = "Date", ylab = "Sentiment Score") %>% dyRangeSelector() %>% dyOptions(useDataTimezone = TRUE, fillGraph = TRUE) %>% dySeries("V1", label = "Sentiment Score") %>% dyLegend(show = "always", hideOnMouseOut = FALSE)
+    })
+    
+    output$prof_name = renderText({
+      paste("Professor ", input$profName)
+    })
+    
+    output$nugget <- renderUI({
+      d4<-Data()[[6]]
+      if(d4 == "Gold"){
+        HTML("<img src='gold1.png' align = 'center', style='width: 79px; float: left; margin-right: 16px; margin-left: 4px; height: 60px;'>")
+      } else if(d4 == "Silver"){
+        HTML("<img src='silver1.png' align = 'center', style='width: 79px; float: left; margin-right: 16px; margin-left: 4px; height: 60px;'>")
+      } else {
+        HTML("<img src='no_nugget.png' align = 'center', style='width: 69px; float: left; margin-right: 13px; margin-left: 4px; height: 53px;'>")
+      }
+    })
+    
     
     output$sentiment_cloud <- renderPlot({
       d2<-Data()[[2]]
@@ -33,7 +109,7 @@ shinyServer(function(input, output, session) {
                 colors=brewer.pal(8, "Dark2"))  
     })
     
-    # output$prof<-renderText({
+    # output$workloadScore<-renderText({
     # 
     #   data<-Data()[1]
     #   name<-gsub('\\[.*|\\(.*|[[:punct:]]','',as.character(amzData$Name[amzData$ASIN==data]))
@@ -59,6 +135,19 @@ shinyServer(function(input, output, session) {
       workload$set(dom="workload")
       return(workload)
       
+    })
+    
+    
+    output$sentiment_cloudReview <- renderPlot({
+      tdmReview<-data.frame(Data()[[3]])
+      if(ncol(tdmReview)==1){
+        emos=Data()[[4]]
+        wordcloud(words = emos,freq = 10, scale=c(5,0.1),random.order = F,rot.per=0.35,min.freq=1, 
+                  colors=brewer.pal(8, "Dark2"))
+      }
+      else
+        comparison.cloud(tdmReview, colors = brewer.pal(ncol(tdmReview), "Dark2"),
+                       scale = c(2,.5), random.order = FALSE, title.size = 1.5)
     })
     
     # output$sentiment_bar_chartWorkload<-renderPlot({
