@@ -2,12 +2,12 @@ options(shiny.maxRequestSize=50*1024^2)
 
 shinyServer(function(input, output, session) {
 
-    Data<-reactive({
+    profData<-reactive({
       #browser()
 
       profData<-prof[prof$profName==input$profName,]
 
-      profDocs<-docs[prof$profName==input$profName]
+      profDocs<-profdocs[prof$profName==input$profName]
       
       txtTdmBi <- as.matrix(TermDocumentMatrix(profDocs, control = list(tokenize = BigramTokenizer)))
       v = sort(rowSums(txtTdmBi),decreasing=TRUE)
@@ -24,25 +24,108 @@ shinyServer(function(input, output, session) {
       d2$sentiment <- ifelse(d2$score<=-1, "Negative", d2$sentiment)
       d2$sentiment<-factor(d2$sentiment,levels=c('Positive','Neutral','Negative'))
       
-      ############ ADDED CODE HERE ##################
       d3 = data.frame(date = profData$created, score = profData$review_score)
       d4 <- profData$nugget[1]
       d5 <- as.character(profData$last_name[1])
       
+      class_emo=classify_emotion(prof$review_text[prof$profName==input$profName],algorithm="bayes",
+                                 prior=1.0)
+      # get emotion best fit
+      emotion = class_emo[,7]
+      # substitute NA's by "unknown"
+      emotion[is.na(emotion)] = "unknown"
       
-      return(list(profData,d2, d3, d4, d5))
-      ###############################################
+      # classify polarity
+      class_pol = classify_polarity(prof$review_text[prof$profName==input$profName],algorithm="bayes")
+      # get polarity best fit
+      polarity = class_pol[,4]
+      
+      # data frame with results
+      sent_df = data.frame(text=prof$review_text[prof$profName==input$profName],emotion=emotion,
+                           polarity=polarity, stringsAsFactors=FALSE)
+      # sort data frame
+      sent_df = within(sent_df,
+                       emotion <- factor(emotion, levels=names(sort(table(emotion), decreasing=TRUE))))
+      
+      emos = levels(factor(sent_df$emotion))
+      nemo = length(emos)
+      emo.docs = rep("", nemo)
+      
+      for (i in 1:nemo){
+        tmp = prof$review_text[prof$profName==input$profName][emotion == emos[i]]
+        emo.docs[i] = paste(tmp, collapse=" ")
+      }
+      
+      # remove stopwords
+      emo.docs = removeWords(emo.docs, stopwords("english"))
+      emo.docs = removeWords(emo.docs, c("group", "final.", "final", "disgusting"))
+      # create corpus
+      corpus = Corpus(VectorSource(emo.docs))
+      corpus <- tm_map(corpus, removePunctuation) 
+      tdmReview = as.matrix(TermDocumentMatrix(corpus,control=list(wordLengths=c(0,Inf))))
+      colnames(tdmReview) = emos
+      #browser()
+      if(ncol(tdmReview)>=2) tdmReview<-tdmReview[rev(order(rowSums(tdmReview))),][1:50,]
+      else {
+        tdmReview<-data.frame(tdmReview[rev(order(rowSums(tdmReview))),][1:50])
+        colnames(tdmReview) = emos
+        
+      }
+      #browser()
+      
+      return(list(profData,d2,tdmReview,emos,d3,d4,d5))
     })
     
-    output$sentiment_cloud <- renderPlot({
-      d2<-Data()[[2]]
+    
+    # Also, I edited the UI.R code and added images to the www folder
+    output$review_dygraph <- renderDygraph({
+      d3<-profData()[[5]]
+      
+      series <- xts(d3$score, order.by = d3$date, tz="GMT")
+      dygraph(series, xlab = "Date", ylab = "Sentiment Score") %>% dyRangeSelector() %>% dyOptions(useDataTimezone = TRUE, fillGraph = TRUE) %>% dySeries("V1", label = "Sentiment Score") %>% dyLegend(show = "always", hideOnMouseOut = FALSE)
+    })
+    
+    output$prof_name = renderText({
+      paste("Professor ", input$profName)
+    })
+    
+    output$nugget <- renderUI({
+      d4<-profData()[[6]]
+      if(d4 == "Gold"){
+        HTML("<img src='gold1.png' align = 'center', style='width: 79px; float: left; margin-right: 16px; margin-left: 4px; height: 60px;'>")
+      } else if(d4 == "Silver"){
+        HTML("<img src='silver1.png' align = 'center', style='width: 79px; float: left; margin-right: 16px; margin-left: 4px; height: 60px;'>")
+      } else {
+        HTML("<img src='no_nugget.png' align = 'center', style='width: 69px; float: left; margin-right: 13px; margin-left: 4px; height: 53px;'>")
+      }
+    })
+    
+    output$prof_pic <- renderUI({
+      d5<-profData()[[7]]
+      if(d5 == "Pe'er")
+        HTML("<img src='csprofpics/peer.jpg' align = 'center', style='float: left; margin-right: 16px; margin-left: 4px; height: 140px; margin-bottom: 19px; margin-top: 5px; border: 4px solid #3c8dbc; border-radius: 5px;'>")
+      else 
+        HTML(paste0("<img src='csprofpics/", tolower(d5),
+                    ".jpg' align = 'center', style='float: left; margin-right: 16px; margin-left: 4px; height: 140px; margin-bottom: 19px; margin-top: 5px; border: 4px solid #3c8dbc; border-radius: 5px;'>"))
+    })
+    
+    output$sentiment_cloudCourse <- renderPlot({
+      d2<-profData()[[2]]
       #browser()
       wordcloud(words = d2$word,freq = d2$freq, scale=c(5,0.1),random.order = F,rot.per=0.35,min.freq=1, 
                 colors=brewer.pal(8, "Dark2"))  
     })
     
-    output$sentiment_bar_chartWorkload<-renderChart2({
-      d2<-Data()[[2]]
+    # output$workloadScore<-renderText({
+    # 
+    #   data<-Data()[1]
+    #   name<-gsub('\\[.*|\\(.*|[[:punct:]]','',as.character(amzData$Name[amzData$ASIN==data]))
+    #   return(name)
+    # 
+    # })
+
+    output$sentiment_bar_chartCourse<-renderChart2({
+      d2<-profData()[[2]]
       #browser()
       colors=colors[as.character(d2$sentiment)]
       names(colors)<-NULL
@@ -56,47 +139,44 @@ shinyServer(function(input, output, session) {
       #mtdChart$yAxis(min=0,title=list(text=input$cumTrafficGraphOption))
       workload$xAxis(title=list(text="Words"),categories=as.character(d2$word),labels=list(rotation=45))
       workload$legend(enabled=F)
-      #workload$set(dom="workload")
+      workload$set(dom="workload")
       return(workload)
       
     })
-
-    ################### ADDED CODE HERE ############################
     
-    # Also, I edited the UI.R code and added images to the www folder
-    output$review_dygraph <- renderDygraph({
-      d3<-Data()[[3]]
+    
+    output$comparison_cloudProf <- renderPlot({
+      tdmReview<-data.frame(profData()[[3]])
+      if(ncol(tdmReview)==1){
+        emos=profData()[[4]]
+        wordcloud(words = emos,freq = 10, scale=c(5,0.1),random.order = F,rot.per=0.35,min.freq=1, 
+                  colors=brewer.pal(8, "Dark2"))
+      }
+      else
+        comparison.cloud(tdmReview, colors = brewer.pal(ncol(tdmReview), "Dark2"),
+                       scale = c(2,.5), random.order = FALSE, title.size = 1.5)
+    })
+    
+    output$sentiment_bar_chartProf<-renderChart2({
+      d2<-profData()[[2]]
+      #browser()
+      colors=colors[as.character(d2$sentiment)]
+      names(colors)<-NULL
       
-      series <- xts(d3$score, order.by = d3$date, tz="GMT")
-      dygraph(series, xlab = "Date", ylab = "Sentiment Score") %>% dyRangeSelector() %>% dyOptions(useDataTimezone = TRUE, fillGraph = TRUE) %>% dySeries("V1", label = "Sentiment Score") %>% dyLegend(show = "always", hideOnMouseOut = FALSE)
-    })
-
-    output$prof_name = renderText({
-      paste("Professor ", input$profName)
-    })
-    
-    output$nugget <- renderUI({
-      d4<-Data()[[4]]
-      if(d4 == "Gold"){
-        HTML("<img src='gold1.png' align = 'center', style='width: 79px; float: left; height: 60px;'>")
-      } else if(d4 == "Silver"){
-        HTML("<img src='silver1.png' align = 'center', style='width: 79px; float: left; height: 60px;'>")
-      } else {
-        HTML("<img src='no_nugget.png' align = 'center', style='width: 69px; float: left; height: 53px;'>")
-      }
-    })
-    
-    output$prof_pic <- renderUI({
-      d5<-Data()[[5]]
-      if(d5 == "Pe'er"){
-        HTML("<img src='csprofpics/peer.jpg' align = 'center', style='float: left; margin-right: 16px; margin-left: 4px; height: 140px; margin-bottom: 19px; margin-top: 5px; border: 4px solid #3c8dbc; border-radius: 5px;'>")
-      }else {
-        HTML(paste0("<img src='csprofpics/", tolower(d5),".jpg' align = 'center', style='float: left; margin-right: 16px; margin-left: 4px; height: 140px; margin-bottom: 19px; margin-top: 5px; border: 4px solid #3c8dbc; border-radius: 5px;'>"))
-      }
+      profBar<-Highcharts$new()
+      profBar$chart(type="column")
+      profBar$series(data=d2$freq,colorByPoint=T,colors=colors,name='Key Words')
+      #workload$series(data=d2$freq[d2$sentiment=='Positive'],name='Positive')
+      #mtdChart$series(data=lastYearMonthData,dashStyle="shortdot",name='Same Month Last Year')
+      profBar$legend(symbolWidth = 80)
+      #mtdChart$yAxis(min=0,title=list(text=input$cumTrafficGraphOption))
+      profBar$xAxis(title=list(text="Words"),categories=as.character(d2$word),labels=list(rotation=45))
+      profBar$legend(enabled=F)
+      profBar$set(dom="profBar")
+      return(profBar)
       
     })
     
-    #####################################################
     # output$sentiment_bar_chartWorkload<-renderPlot({
     #   d2<-Data()[[2]]
     #   #browser()
@@ -109,13 +189,7 @@ shinyServer(function(input, output, session) {
     
     
     # 
-    # output$Rec1Name<-renderText({
-    #   
-    #   data<-Data()[1]
-    #   name<-gsub('\\[.*|\\(.*|[[:punct:]]','',as.character(amzData$Name[amzData$ASIN==data]))
-    #   return(name)
-    #   
-    # })
+    
     # 
     # output$profPic = renderImage({
     #   #data<-Data()[1]
