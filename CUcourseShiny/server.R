@@ -4,7 +4,6 @@ shinyServer(function(input, output, session) {
 
     profData<-reactive({
       #browser()
-
       profData<-prof[prof$profName==input$profName,]
 
       profDocs<-profdocs[prof$profName==input$profName]
@@ -69,13 +68,81 @@ shinyServer(function(input, output, session) {
       else {
         tdmReview<-data.frame(tdmReview[rev(order(rowSums(tdmReview))),][1:50])
         colnames(tdmReview) = emos
-        
       }
       #browser()
       
       return(list(profData,d2,tdmReview,emos,d3,d4,d5))
     })
     
+    courseData<-reactive({
+      courseData<-course[course$name==input$courseName,]
+      
+      profDocs<-profdocs[prof$profName==input$profName]
+      
+      txtTdmBi <- as.matrix(TermDocumentMatrix(profDocs, control = list(tokenize = BigramTokenizer)))
+      v = sort(rowSums(txtTdmBi),decreasing=TRUE)
+      d = data.frame(word = names(v),freq=v)
+      d<-d[!d$word%in%
+             c('final','midterm','finals','midterms','assignment','assignments','problem','problems'),]
+      if(nrow(d)>=30) d2<-d[1:30,]
+      else d2<-d
+      
+      d2$score <- score.sentiment(d2$word, pos.words, neg.words, .progress="text")
+      d2$sentiment <- rep(0)
+      d2$sentiment <- ifelse(d2$score>=1, "Positive", d2$sentiment)
+      d2$sentiment <- ifelse(d2$score==0, "Neutral", d2$sentiment)
+      d2$sentiment <- ifelse(d2$score<=-1, "Negative", d2$sentiment)
+      d2$sentiment<-factor(d2$sentiment,levels=c('Positive','Neutral','Negative'))
+      
+      d3 = data.frame(date = profData$created, score = profData$review_score)
+      d4 <- profData$nugget[1]
+      d5 <- as.character(profData$last_name[1])
+      
+      class_emo=classify_emotion(prof$review_text[prof$profName==input$profName],algorithm="bayes",
+                                 prior=1.0)
+      # get emotion best fit
+      emotion = class_emo[,7]
+      # substitute NA's by "unknown"
+      emotion[is.na(emotion)] = "unknown"
+      
+      # classify polarity
+      class_pol = classify_polarity(prof$review_text[prof$profName==input$profName],algorithm="bayes")
+      # get polarity best fit
+      polarity = class_pol[,4]
+      
+      # data frame with results
+      sent_df = data.frame(text=prof$review_text[prof$profName==input$profName],emotion=emotion,
+                           polarity=polarity, stringsAsFactors=FALSE)
+      # sort data frame
+      sent_df = within(sent_df,
+                       emotion <- factor(emotion, levels=names(sort(table(emotion), decreasing=TRUE))))
+      
+      emos = levels(factor(sent_df$emotion))
+      nemo = length(emos)
+      emo.docs = rep("", nemo)
+      
+      for (i in 1:nemo){
+        tmp = prof$review_text[prof$profName==input$profName][emotion == emos[i]]
+        emo.docs[i] = paste(tmp, collapse=" ")
+      }
+      
+      # remove stopwords
+      emo.docs = removeWords(emo.docs, stopwords("english"))
+      emo.docs = removeWords(emo.docs, c("group", "final.", "final", "disgusting"))
+      # create corpus
+      corpus = Corpus(VectorSource(emo.docs))
+      corpus <- tm_map(corpus, removePunctuation) 
+      tdmReview = as.matrix(TermDocumentMatrix(corpus,control=list(wordLengths=c(0,Inf))))
+      colnames(tdmReview) = emos
+      #browser()
+      if(ncol(tdmReview)>=2) tdmReview<-tdmReview[rev(order(rowSums(tdmReview))),][1:50,]
+      else {
+        tdmReview<-data.frame(tdmReview[rev(order(rowSums(tdmReview))),][1:50])
+        colnames(tdmReview) = emos
+      }
+      
+      return(list(courseData,d2,tdmReview,emos,d3,d4,d5))
+    })
     
     # Also, I edited the UI.R code and added images to the www folder
     output$review_dygraph <- renderDygraph({
