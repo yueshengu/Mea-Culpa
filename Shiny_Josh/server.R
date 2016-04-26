@@ -4,7 +4,6 @@ shinyServer(function(input, output, session) {
 
     profData<-reactive({
       #browser()
-
       profData<-prof[prof$profName==input$profName,]
 
       profDocs<-profdocs[prof$profName==input$profName]
@@ -27,6 +26,10 @@ shinyServer(function(input, output, session) {
       d3 = data.frame(date = profData$created, score = profData$review_score)
       d4 <- profData$nugget[1]
       d5 <- as.character(profData$last_name[1])
+      
+      ################## Changed ##################
+      d6 <- round(mean(profData[,10]$score), 2)
+      #############################################
       
       class_emo=classify_emotion(prof$review_text[prof$profName==input$profName],algorithm="bayes",
                                  prior=1.0)
@@ -69,13 +72,38 @@ shinyServer(function(input, output, session) {
       else {
         tdmReview<-data.frame(tdmReview[rev(order(rowSums(tdmReview))),][1:50])
         colnames(tdmReview) = emos
-        
       }
       #browser()
       
-      return(list(profData,d2,tdmReview,emos,d3,d4,d5))
+      return(list(profData,d2,tdmReview,emos,d3,d4,d5, d6))
     })
     
+    courseData<-reactive({
+      courseData<-course[course$name==input$courseName,]
+      
+      courseDocs<-coursedocs[course$name==input$courseName]
+      
+      txtTdmBi <- as.matrix(TermDocumentMatrix(courseDocs, control = list(tokenize = BigramTokenizer)))
+      v = sort(rowSums(txtTdmBi),decreasing=TRUE)
+      d = data.frame(word = names(v),freq=v)
+      d<-d[!d$word%in%
+             c('final','midterm','finals','midterms','assignment','assignments','problem','problems'),]
+      if(nrow(d)>=30) d2<-d[1:30,]
+      else d2<-d
+      
+      d2$score <- score.sentiment(d2$word, pos.words, neg.words, .progress="text")
+      d2$sentiment <- rep(0)
+      d2$sentiment <- ifelse(d2$score>=1, "Positive", d2$sentiment)
+      d2$sentiment <- ifelse(d2$score==0, "Neutral", d2$sentiment)
+      d2$sentiment <- ifelse(d2$score<=-1, "Negative", d2$sentiment)
+      d2$sentiment<-factor(d2$sentiment,levels=c('Positive','Neutral','Negative'))
+      
+      ################  Changed  ###############
+      d3 <- as.character(courseData$course_ids[1])
+      #############################################  
+        
+      return(list(courseData,d2, d3))
+    })
     
     # Also, I edited the UI.R code and added images to the www folder
     output$review_dygraph <- renderDygraph({
@@ -89,17 +117,35 @@ shinyServer(function(input, output, session) {
       paste("Professor ", input$profName)
     })
     
+    ############### Changed all within comments ######################
+    output$course_name = renderText({
+      paste(input$courseName)
+    })
+    
+    output$prof_sent_score = renderText({
+      d6 <- profData()[[8]]
+      paste("Sentiment: ", d6, " / 11.33")
+    })
+    
+    
+    output$course_pic <- renderUI({
+      d3 <- courseData()[[3]]
+      HTML(paste0("<img src='cscoursepics/", d3, ".jpg' align = 'center', style='float: left; margin-right: 16px; margin-left: 4px; height: 140px; margin-bottom: 19px; margin-top: 5px; border: 4px solid #3c8dbc; border-radius: 5px;'>"))
+      
+    })
+    
     output$nugget <- renderUI({
       d4<-profData()[[6]]
       if(d4 == "Gold"){
-        HTML("<img src='gold1.png' align = 'center', style='width: 79px; float: left; margin-right: 16px; margin-left: 4px; height: 60px;'>")
+        HTML("<img src='gold1.png' align = 'center', style='width: 79px; float: left; margin-right: 16px; margin-left: 39px; height: 60px;'>")
       } else if(d4 == "Silver"){
-        HTML("<img src='silver1.png' align = 'center', style='width: 79px; float: left; margin-right: 16px; margin-left: 4px; height: 60px;'>")
+        HTML("<img src='silver1.png' align = 'center', style='width: 79px; float: left; margin-right: 16px; margin-left: 39px; height: 60px;'>")
       } else {
-        HTML("<img src='no_nugget.png' align = 'center', style='width: 69px; float: left; margin-right: 13px; margin-left: 4px; height: 53px;'>")
+        HTML("<img src='no_nugget.png' align = 'center', style='width: 69px; float: left; margin-right: 13px; margin-left: 39px; height: 53px;'>")
       }
     })
     
+    #############################################
     output$prof_pic <- renderUI({
       d5<-profData()[[7]]
       if(d5 == "Pe'er")
@@ -110,7 +156,7 @@ shinyServer(function(input, output, session) {
     })
     
     output$sentiment_cloudCourse <- renderPlot({
-      d2<-profData()[[2]]
+      d2<-courseData()[[2]]
       #browser()
       wordcloud(words = d2$word,freq = d2$freq, scale=c(5,0.1),random.order = F,rot.per=0.35,min.freq=1, 
                 colors=brewer.pal(8, "Dark2"))  
@@ -125,7 +171,7 @@ shinyServer(function(input, output, session) {
     # })
 
     output$sentiment_bar_chartCourse<-renderChart2({
-      d2<-profData()[[2]]
+      d2<-courseData()[[2]]
       #browser()
       colors=colors[as.character(d2$sentiment)]
       names(colors)<-NULL
