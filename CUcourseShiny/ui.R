@@ -1,4 +1,4 @@
-dbHeader<-dashboardHeader(title='Mae CULPA')
+dbHeader<-dashboardHeader(title='Mea CULPA')
 
 dashboardPage(
   skin="blue",
