@@ -114,7 +114,7 @@ output$sentiment_bar_chart <- renderPlot({
   neg.words <- scan('../data/negative-words.txt', what='character', comment.char=';')
   combined<-readRDS("../data/prof_combined_sentiment.rds")
   
-    corpus <- Corpus(VectorSource(combined$workload_text))
+    corpus <- Corpus(VectorSource(combined$review_text))
     docs <- tm_map(corpus, removePunctuation) 
     docs <- tm_map(docs, removeNumbers) 
     docs <- tm_map(docs, tolower)
@@ -131,6 +131,7 @@ output$sentiment_bar_chart <- renderPlot({
     m = as.matrix(txtTdmBi)
     v = sort(rowSums(m),decreasing=TRUE)
     d = data.frame(word = names(v),freq=v)
+    d <- score.sentiment(docs, pos.words, neg.words, .progress="text")
   
   d$score <- score.sentiment(d$word, pos.words, neg.words, .progress="text")
   d$sentiment <- rep(0)

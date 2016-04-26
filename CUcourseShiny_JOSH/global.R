@@ -35,18 +35,7 @@ profdocs <- tm_map(profdocs, tolower)
 profdocs <- tm_map(profdocs, removeWords, c(stopwords("english")))
 #docs <- tm_map(docs, stemDocument)  
 profdocs <- tm_map(profdocs, PlainTextDocument)
-# proftdm <- TermDocumentMatrix(profdocs)
-
-coursecorpus <- Corpus(VectorSource(course$review_text))
-coursedocs <- tm_map(coursecorpus, removePunctuation) 
-# docs <- tm_map(docs, removeNumbers) 
-coursedocs <- tm_map(coursedocs, tolower)
-coursedocs <- tm_map(coursedocs, removeWords, c(stopwords("english")))
-#docs <- tm_map(docs, stemDocument)  
-coursedocs <- tm_map(coursedocs, PlainTextDocument)
-# coursedocs <- TermDocumentMatrix(coursedocs)
-
-
+proftdm <- TermDocumentMatrix(profdocs)
 
 score.sentiment <- function(sentences, pos.words, neg.words, .progress='none') {
   require(plyr)

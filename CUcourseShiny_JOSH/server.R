@@ -4,6 +4,7 @@ shinyServer(function(input, output, session) {
 
     profData<-reactive({
       #browser()
+
       profData<-prof[prof$profName==input$profName,]
 
       profDocs<-profdocs[prof$profName==input$profName]
@@ -68,34 +69,13 @@ shinyServer(function(input, output, session) {
       else {
         tdmReview<-data.frame(tdmReview[rev(order(rowSums(tdmReview))),][1:50])
         colnames(tdmReview) = emos
+        
       }
       #browser()
       
       return(list(profData,d2,tdmReview,emos,d3,d4,d5))
     })
     
-    courseData<-reactive({
-      courseData<-course[course$name==input$courseName,]
-      
-      courseDocs<-coursedocs[course$name==input$courseName]
-      
-      txtTdmBi <- as.matrix(TermDocumentMatrix(courseDocs, control = list(tokenize = BigramTokenizer)))
-      v = sort(rowSums(txtTdmBi),decreasing=TRUE)
-      d = data.frame(word = names(v),freq=v)
-      d<-d[!d$word%in%
-             c('final','midterm','finals','midterms','assignment','assignments','problem','problems'),]
-      if(nrow(d)>=30) d2<-d[1:30,]
-      else d2<-d
-      
-      d2$score <- score.sentiment(d2$word, pos.words, neg.words, .progress="text")
-      d2$sentiment <- rep(0)
-      d2$sentiment <- ifelse(d2$score>=1, "Positive", d2$sentiment)
-      d2$sentiment <- ifelse(d2$score==0, "Neutral", d2$sentiment)
-      d2$sentiment <- ifelse(d2$score<=-1, "Negative", d2$sentiment)
-      d2$sentiment<-factor(d2$sentiment,levels=c('Positive','Neutral','Negative'))
-      
-      return(list(courseData,d2))
-    })
     
     # Also, I edited the UI.R code and added images to the www folder
     output$review_dygraph <- renderDygraph({
@@ -130,7 +110,7 @@ shinyServer(function(input, output, session) {
     })
     
     output$sentiment_cloudCourse <- renderPlot({
-      d2<-courseData()[[2]]
+      d2<-profData()[[2]]
       #browser()
       wordcloud(words = d2$word,freq = d2$freq, scale=c(5,0.1),random.order = F,rot.per=0.35,min.freq=1, 
                 colors=brewer.pal(8, "Dark2"))  
@@ -145,7 +125,7 @@ shinyServer(function(input, output, session) {
     # })
 
     output$sentiment_bar_chartCourse<-renderChart2({
-      d2<-courseData()[[2]]
+      d2<-profData()[[2]]
       #browser()
       colors=colors[as.character(d2$sentiment)]
       names(colors)<-NULL
