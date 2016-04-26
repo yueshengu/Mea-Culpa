@@ -23,18 +23,19 @@ dashboardPage(
   dashboardBody(
     includeCSS('./www/custom.css'),
     tabItems(
-      
+      ################# Changed here #####################
       tabItem(tabName='prof',
               fluidRow(
                 column(width=12,
                        htmlOutput("prof_pic"), 
                        textOutput("prof_name"),
+                       textOutput("prof_sent_score"),
                        htmlOutput("nugget"),
                        tags$head(tags$style("#prof_name{color:#3c8dbc;font-size:33px;font-weight:bold;
-margin-bottom:19px;margin-top:4px;}"))                          
+margin-bottom:8px; margin-top:15px;}"), tags$style("#prof_sent_score{float: left; font-style: italic; color:#3c8dbc;font-size:23px; padding-top: 10px;}"))                          
                 )
               ),
-              
+       #####################################################       
               fluidRow(
                 column(width=4,
                        box(title = "Review Sentimental Cloud", status = "primary",
@@ -58,7 +59,17 @@ margin-bottom:19px;margin-top:4px;}"))
                 )
               )
       ),
+      #################   Changed Here   #################### 
       tabItem(tabName='course',
+              fluidRow(
+                column(width=12,
+                       htmlOutput("course_pic"), 
+                       textOutput("course_name"),
+                       tags$head(tags$style("#course_name{color:#3c8dbc;font-size:33px;font-weight:bold;
+margin-bottom:19px;margin-top:4px;}"))                          
+                )
+              ),
+        #####################################################       
               fluidRow(
                 column(width=4,
                        box(title = "Workload Cloud", status = "primary",
