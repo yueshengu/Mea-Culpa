@@ -27,9 +27,10 @@ shinyServer(function(input, output, session) {
       ############ ADDED CODE HERE ##################
       d3 = data.frame(date = profData$created, score = profData$review_score)
       d4 <- profData$nugget[1]
+      d5 <- as.character(profData$last_name[1])
       
       
-      return(list(profData,d2, d3, d4))
+      return(list(profData,d2, d3, d4, d5))
       ###############################################
     })
     
@@ -77,12 +78,22 @@ shinyServer(function(input, output, session) {
     output$nugget <- renderUI({
       d4<-Data()[[4]]
       if(d4 == "Gold"){
-        HTML("<img src='gold1.png' align = 'center', style='width: 79px; float: left; margin-right: 16px; margin-left: 4px; height: 60px;'>")
+        HTML("<img src='gold1.png' align = 'center', style='width: 79px; float: left; height: 60px;'>")
       } else if(d4 == "Silver"){
-        HTML("<img src='silver1.png' align = 'center', style='width: 79px; float: left; margin-right: 16px; margin-left: 4px; height: 60px;'>")
+        HTML("<img src='silver1.png' align = 'center', style='width: 79px; float: left; height: 60px;'>")
       } else {
-        HTML("<img src='no_nugget.png' align = 'center', style='width: 69px; float: left; margin-right: 13px; margin-left: 4px; height: 53px;'>")
+        HTML("<img src='no_nugget.png' align = 'center', style='width: 69px; float: left; height: 53px;'>")
       }
+    })
+    
+    output$prof_pic <- renderUI({
+      d5<-Data()[[5]]
+      if(d5 == "Pe'er"){
+        HTML("<img src='csprofpics/peer.jpg' align = 'center', style='float: left; margin-right: 16px; margin-left: 4px; height: 140px; margin-bottom: 19px; margin-top: 5px; border: 4px solid #3c8dbc; border-radius: 5px;'>")
+      }else {
+        HTML(paste0("<img src='csprofpics/", tolower(d5),".jpg' align = 'center', style='float: left; margin-right: 16px; margin-left: 4px; height: 140px; margin-bottom: 19px; margin-top: 5px; border: 4px solid #3c8dbc; border-radius: 5px;'>"))
+      }
+      
     })
     
     #####################################################
