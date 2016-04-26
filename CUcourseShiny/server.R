@@ -2,12 +2,12 @@ options(shiny.maxRequestSize=50*1024^2)
 
 shinyServer(function(input, output, session) {
 
-    Data<-reactive({
+    profData<-reactive({
       #browser()
 
       profData<-prof[prof$profName==input$profName,]
 
-      profDocs<-docs[prof$profName==input$profName]
+      profDocs<-profdocs[prof$profName==input$profName]
       
       txtTdmBi <- as.matrix(TermDocumentMatrix(profDocs, control = list(tokenize = BigramTokenizer)))
       v = sort(rowSums(txtTdmBi),decreasing=TRUE)
@@ -79,7 +79,7 @@ shinyServer(function(input, output, session) {
     
     # Also, I edited the UI.R code and added images to the www folder
     output$review_dygraph <- renderDygraph({
-      d3<-Data()[[5]]
+      d3<-profData()[[5]]
       
       series <- xts(d3$score, order.by = d3$date, tz="GMT")
       dygraph(series, xlab = "Date", ylab = "Sentiment Score") %>% dyRangeSelector() %>% dyOptions(useDataTimezone = TRUE, fillGraph = TRUE) %>% dySeries("V1", label = "Sentiment Score") %>% dyLegend(show = "always", hideOnMouseOut = FALSE)
@@ -90,7 +90,7 @@ shinyServer(function(input, output, session) {
     })
     
     output$nugget <- renderUI({
-      d4<-Data()[[6]]
+      d4<-profData()[[6]]
       if(d4 == "Gold"){
         HTML("<img src='gold1.png' align = 'center', style='width: 79px; float: left; margin-right: 16px; margin-left: 4px; height: 60px;'>")
       } else if(d4 == "Silver"){
@@ -101,7 +101,7 @@ shinyServer(function(input, output, session) {
     })
     
     output$prof_pic <- renderUI({
-      d5<-Data()[[7]]
+      d5<-profData()[[7]]
       if(d5 == "Pe'er")
         HTML("<img src='csprofpics/peer.jpg' align = 'center', style='float: left; margin-right: 16px; margin-left: 4px; height: 140px; margin-bottom: 19px; margin-top: 5px; border: 4px solid #3c8dbc; border-radius: 5px;'>")
       else 
@@ -110,7 +110,7 @@ shinyServer(function(input, output, session) {
     })
     
     output$sentiment_cloudCourse <- renderPlot({
-      d2<-Data()[[2]]
+      d2<-profData()[[2]]
       #browser()
       wordcloud(words = d2$word,freq = d2$freq, scale=c(5,0.1),random.order = F,rot.per=0.35,min.freq=1, 
                 colors=brewer.pal(8, "Dark2"))  
@@ -125,7 +125,7 @@ shinyServer(function(input, output, session) {
     # })
 
     output$sentiment_bar_chartCourse<-renderChart2({
-      d2<-Data()[[2]]
+      d2<-profData()[[2]]
       #browser()
       colors=colors[as.character(d2$sentiment)]
       names(colors)<-NULL
@@ -146,9 +146,9 @@ shinyServer(function(input, output, session) {
     
     
     output$comparison_cloudProf <- renderPlot({
-      tdmReview<-data.frame(Data()[[3]])
+      tdmReview<-data.frame(profData()[[3]])
       if(ncol(tdmReview)==1){
-        emos=Data()[[4]]
+        emos=profData()[[4]]
         wordcloud(words = emos,freq = 10, scale=c(5,0.1),random.order = F,rot.per=0.35,min.freq=1, 
                   colors=brewer.pal(8, "Dark2"))
       }
@@ -158,7 +158,7 @@ shinyServer(function(input, output, session) {
     })
     
     output$sentiment_bar_chartProf<-renderChart2({
-      d2<-Data()[[2]]
+      d2<-profData()[[2]]
       #browser()
       colors=colors[as.character(d2$sentiment)]
       names(colors)<-NULL

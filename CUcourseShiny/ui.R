@@ -12,7 +12,11 @@ dashboardPage(
     conditionalPanel("input.sidebarmenu === 'prof'",
                      #h4('Web Traffic Options:',align='center'),
                      selectInput("profName","Professor:",levels(prof$profName),
-                                 selected=levels(prof$profName)[1],multiple=F,width="100%"))
+                                 selected=levels(prof$profName)[1],multiple=F,width="100%")),
+    conditionalPanel("input.sidebarmenu === 'course'",
+                     #h4('Web Traffic Options:',align='center'),
+                     selectInput("courseName","Course:",levels(course$name),
+                                 selected=levels(course$name)[1],multiple=F,width="100%"))
     
   ),
   
