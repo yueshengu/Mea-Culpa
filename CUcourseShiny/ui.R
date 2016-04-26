@@ -1,4 +1,4 @@
-dbHeader<-dashboardHeader(title='CS Courses')
+dbHeader<-dashboardHeader(title='Mae CULPA')
 
 dashboardPage(
   skin="blue",
@@ -22,19 +22,26 @@ dashboardPage(
       
       tabItem(tabName='prof',
               fluidRow(
-                column(width=12,htmlOutput("nugget"), 
+                column(width=12,
+                       htmlOutput("prof_pic"), 
                        textOutput("prof_name"),
-                       tags$head(tags$style("#prof_name{color:#3c8dbc;font-size:33px;font-weight:bold;margin-bottom:19px;margin-top:4px;
-                                                   }"
-                       )
-                       )                               
-                )),
+                       htmlOutput("nugget"),
+                       tags$head(tags$style("#prof_name{color:#3c8dbc;font-size:33px;font-weight:bold;
+margin-bottom:19px;margin-top:4px;}"))                          
+                )
+              ),
               
               fluidRow(
                 column(width=4,
                        box(title = "Review Sentimental Cloud", status = "primary",
                            width=NULL,solidHeader=T,
-                           plotOutput("sentiment_cloudReview")
+                           plotOutput("comparison_cloudProf")
+                       )
+                ),
+                column(width=8,
+                       box(title = "Review Sentiments", status = "primary",
+                           width=NULL,solidHeader=T,
+                           showOutput("sentiment_bar_chartProf","highcharts")
                        )
                 )
               ),
@@ -52,13 +59,13 @@ dashboardPage(
                 column(width=4,
                        box(title = "Workload Cloud", status = "primary",
                            width=NULL,solidHeader=T,
-                           plotOutput("sentiment_cloud")
+                           plotOutput("sentiment_cloudCourse")
                        )
                 ),
                 column(width=8,
                        box(title = "Workload Sentiments", status = "primary",
                            width=NULL,solidHeader=T,
-                           showOutput("sentiment_bar_chartWorkload","highcharts")
+                           showOutput("sentiment_bar_chartCourse","highcharts")
                        )
                 )
               )
