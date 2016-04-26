@@ -15,7 +15,8 @@ dashboardPage(
     conditionalPanel("input.sidebarmenu === 'prof'",
                      #h4('Web Traffic Options:',align='center'),
                      selectInput("profName","Professor:",levels(prof$profName),
-                                 selected=levels(prof$profName)[1],multiple=F,width="100%"))
+                                 selected=levels(prof$profName)[1],multiple=F,width="100%")
+                     )
    
     
     ),
@@ -27,7 +28,7 @@ dashboardPage(
       
       tabItem(tabName='prof',
 ####################  ADDED CODE HERE  #################################
-              fluidRow(column(width=12,htmlOutput("nugget"), textOutput("prof_name"),
+              fluidRow(column(width=12, htmlOutput("prof_pic"), textOutput("prof_name"), htmlOutput("nugget"),
               tags$head(tags$style("#prof_name{ color: #3c8dbc; font-size: 33px; font-weight: bold; margin-bottom: 19px; margin-top: 4px;
                                  }"
                          )
