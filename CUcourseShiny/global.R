@@ -9,10 +9,23 @@ library("RWeka")
 library(ggplot2)
 library(xts)
 library('dygraphs')
+library(rjson)
 
 source("classify_emotion.R")
 source("classify_polarity.R")
 source("create_matrix.R")
+
+courseTags<-c('introduction','fundamental','algorithm','java','no prior programming background',
+              'matlab','honors-level','model','data structure','array','stack','list','queue','tree',
+              'graph','sort','search','hash','storage','practical','c++','unix','perl','web','logic',
+              'proof','math','probability','relation','regular expression','theory','set','design',
+              'processor','database','sql','xml','query','security','compiler','object-oriented','data',
+              'script','code','language','operating system','memory','internet','network','software',
+              'interactive','animation','physic','user interface','team','image','robot','machine learning',
+              'support vector machine','neural network','kernel','regression','classification','advance',
+              'parallel','cloud','mobile'
+              )
+#grepl(paste(c('java','no prior programming background'),collapse='|'),courseTags)
 
 options(stringsAsFactors = F)
 options(mc.cores=1)
@@ -72,5 +85,12 @@ score.sentiment <- function(sentences, pos.words, neg.words, .progress='none') {
 }
 
 
+# dat <- rjson::fromJSON(file="www/heatmap-data.json")
+# dat <- lapply(dat, function(x) {
+#   x[sapply(x, is.null)] <- NA
+#   unlist(x)
+# })
+dat <- cbind(rep(0:4,25),rep(0:24,each=5),c(rep(1,5),rep(0,120)))#matrix(dat$data, ncol=3, byrow=TRUE)
+colnames(dat) <- c("x","y","value")
 
 

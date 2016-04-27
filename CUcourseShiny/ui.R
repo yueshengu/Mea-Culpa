@@ -1,5 +1,6 @@
 dbHeader<-dashboardHeader(title='Mea CULPA')
 
+
 dashboardPage(
   skin="blue",
   dbHeader,
@@ -16,12 +17,20 @@ dashboardPage(
     conditionalPanel("input.sidebarmenu === 'course'",
                      #h4('Web Traffic Options:',align='center'),
                      selectInput("courseName","Course:",levels(course$name),
-                                 selected=levels(course$name)[1],multiple=F,width="100%"))
+                                 selected=levels(course$name)[1],multiple=F,width="100%")),
+    conditionalPanel("input.sidebarmenu === 'rec'",
+                     #h4('Web Traffic Options:',align='center'),
+                     selectInput("courseTopics","Topics of interest:",courseTags,
+                                 selected='cloud',multiple=T,width="100%"))
     
   ),
   
   dashboardBody(
     includeCSS('./www/custom.css'),
+    tags$head(tags$script(src = "https://code.highcharts.com/highcharts.js"),
+              tags$script(src = "https://code.highcharts.com/highcharts-more.js"),
+              tags$script(src = "https://code.highcharts.com/modules/exporting.js"),
+              tags$script(src = "https://code.highcharts.com/modules/heatmap.js")),
     tabItems(
       
       tabItem(tabName='prof',
@@ -29,10 +38,13 @@ dashboardPage(
                 column(width=12,
                        htmlOutput("prof_pic"), 
                        textOutput("prof_name"),
+                       textOutput("prof_sent_score"),
                        htmlOutput("nugget"),
                        tags$head(tags$style("#prof_name{color:#3c8dbc;font-size:33px;font-weight:bold;
-margin-bottom:19px;margin-top:4px;}"))                          
-                )
+                                            margin-bottom:8px; margin-top:15px;}"), 
+                                 tags$style("#prof_sent_score{float: left; font-style: italic; 
+                                            color:#3c8dbc;font-size:23px; padding-top: 10px;}"))                          
+                       )
               ),
               
               fluidRow(
@@ -60,6 +72,17 @@ margin-bottom:19px;margin-top:4px;}"))
       ),
       tabItem(tabName='course',
               fluidRow(
+                column(width=12,
+                       htmlOutput("course_pic"), 
+                       textOutput("course_name"),
+                       textOutput("course_sent_score"),
+                       tags$head(tags$style("#course_name{color:#3c8dbc;font-size:33px;font-weight:bold;
+                                            margin-bottom:19px;margin-top:4px;}"),
+                                 tags$style("#course_sent_score{float: left; font-style: italic; 
+                                            color:#3c8dbc;font-size:23px; padding-top: 10px;}"))                          
+                )
+              ),
+              fluidRow(
                 column(width=4,
                        box(title = "Workload Cloud", status = "primary",
                            width=NULL,solidHeader=T,
@@ -73,6 +96,23 @@ margin-bottom:19px;margin-top:4px;}"))
                        )
                 )
               )
+      ),
+      tabItem(tabName='rec',
+              fluidRow(
+                column(width=4,
+                       selectInput("firstCourse","First Course:",levels(course$name),
+                                   selected='Computer Architecture',multiple=F,width="100%")
+                       )
+                ),
+              fluidRow(
+                column(width=12,
+                       box(title = "Schedule", status = "primary",
+                           width=NULL,solidHeader=T,
+                           showOutput("heatmap","highcharts")
+                       )
+                )
+              )
+             
       )
     )
   )
