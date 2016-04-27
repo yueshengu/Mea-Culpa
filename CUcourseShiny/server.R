@@ -3,15 +3,37 @@ options(shiny.maxRequestSize=50*1024^2)
 shinyServer(function(input, output, session) {
   
   observe({
-    firstCourseMatch<-unique(as.character(course$name[grepl(paste(input$courseTopics,collapse='|'),
-                                                            tolower(course$Description))|
-                                                        grepl(paste(input$courseTopics,collapse='|'),
-                                                              tolower(course$name))]))
+    matchedCourses<-course[grepl(paste(input$courseTopics,collapse='|'),
+                                 tolower(course$Description))|
+                             grepl(paste(input$courseTopics,collapse='|'),
+                                   tolower(course$name)),]
+    matchedCourses<-matchedCourses[!duplicated(matchedCourses$name),]
+    matchedCourses<-matchedCourses[order(matchedCourses$rank),]
+    
+    firstCourseMatch<-as.character(matchedCourses$name)
     updateSelectInput(session,"firstCourse","First Course:",choices=firstCourseMatch,
                       selected=firstCourseMatch[1])
-    #secondCourseMatch<-firstCourseMatch[firstCourseMatch]
     
-
+    secondMatch<-matchedCourses[!matchedCourses$LectureFactor%in%
+                                  matchedCourses$LectureFactor[matchedCourses$name==input$firstCourse],]
+    secondCourseMatch<-as.character(secondMatch$name)
+    updateSelectInput(session,"secondCourse","Second Course:",choices=secondCourseMatch,
+                      selected=secondCourseMatch[1])
+    
+    thirdMatch<-matchedCourses[!matchedCourses$LectureFactor%in%
+                                  matchedCourses$LectureFactor[matchedCourses$name%in%
+                                                                 c(input$firstCourse,input$secondCourse)],]
+    thirdCourseMatch<-as.character(thirdMatch$name)
+    updateSelectInput(session,"thirdCourse","Third Course:",choices=thirdCourseMatch,
+                      selected=thirdCourseMatch[1])
+    
+    fourthMatch<-matchedCourses[!matchedCourses$LectureFactor%in%
+                                 matchedCourses$LectureFactor[matchedCourses$name%in%
+                                                                c(input$firstCourse,input$secondCourse,
+                                                                  input$thirdCourse)],]
+    fourthCourseMatch<-as.character(fourthMatch$name)
+    updateSelectInput(session,"fourthCourse","Fourth Course:",choices=fourthCourseMatch,
+                      selected=fourthCourseMatch[1])
   })
   
   
@@ -116,6 +138,10 @@ shinyServer(function(input, output, session) {
   
   scheduleData<-reactive({
     course1<-course[course$name==input$firstCourse,][1,]
+    #browser()
+    course2<-course[course$name==input$secondCourse,][1,]
+    course3<-course[course$name==input$thirdCourse,][1,]
+    course4<-course[course$name==input$fourthCourse,][1,]
     
     dat <- cbind(x=rep(0:4,each=25),y=rep(0:24,5),value=rep(0,125))#,name=rep(NA,125))
     colnames(dat) <- c("x","y","value")#,'name')
@@ -135,6 +161,48 @@ shinyServer(function(input, output, session) {
     }else if(course1$LectureDay==4){
       dat[(100+course1$LectureStartTime):(100+course1$LectureEndTime),3]<-1
       # dat[(100+course1$LectureStartTime):(100+course1$LectureEndTime),4]<-as.character(course1$name)
+    }
+    
+    if(input$secondCourse!=''){
+      if(course2$LectureDay==0){
+        dat[course2$LectureStartTime:course2$LectureEndTime,3]<-2
+        dat[(50+course2$LectureStartTime):(50+course2$LectureEndTime),3]<-2
+      }else if(course2$LectureDay==3){
+        dat[(75+course2$LectureStartTime):(75+course2$LectureEndTime),3]<-2
+      }else if(course2$LectureDay==1){
+        dat[(25+course2$LectureStartTime):(25+course2$LectureEndTime),3]<-2
+        dat[(75+course2$LectureStartTime):(75+course2$LectureEndTime),3]<-2
+      }else if(course2$LectureDay==4){
+        dat[(100+course2$LectureStartTime):(100+course2$LectureEndTime),3]<-2
+      }
+    }
+    
+    if(input$thirdCourse!=''){
+      if(course3$LectureDay==0){
+        dat[course3$LectureStartTime:course3$LectureEndTime,3]<-3
+        dat[(50+course3$LectureStartTime):(50+course3$LectureEndTime),3]<-3
+      }else if(course3$LectureDay==3){
+        dat[(75+course3$LectureStartTime):(75+course3$LectureEndTime),3]<-3
+      }else if(course3$LectureDay==1){
+        dat[(25+course3$LectureStartTime):(25+course3$LectureEndTime),3]<-3
+        dat[(75+course3$LectureStartTime):(75+course3$LectureEndTime),3]<-3
+      }else if(course3$LectureDay==4){
+        dat[(100+course3$LectureStartTime):(100+course3$LectureEndTime),3]<-3
+      }
+    }
+    
+    if(input$fourthCourse!=''){
+      if(course4$LectureDay==0){
+        dat[course4$LectureStartTime:course4$LectureEndTime,3]<-4
+        dat[(50+course4$LectureStartTime):(50+course4$LectureEndTime),3]<-4
+      }else if(course4$LectureDay==3){
+        dat[(75+course4$LectureStartTime):(75+course4$LectureEndTime),3]<-4
+      }else if(course4$LectureDay==1){
+        dat[(25+course4$LectureStartTime):(25+course4$LectureEndTime),3]<-4
+        dat[(75+course4$LectureStartTime):(75+course4$LectureEndTime),3]<-4
+      }else if(course4$LectureDay==4){
+        dat[(100+course4$LectureStartTime):(100+course4$LectureEndTime),3]<-4
+      }
     }
     
     #browser()

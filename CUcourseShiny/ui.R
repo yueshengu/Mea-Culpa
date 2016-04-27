@@ -106,6 +106,14 @@ dashboardPage(
                 column(width=3,
                        selectInput("secondCourse","Second Course:",levels(course$name),
                                    selected=NULL,multiple=F,width="100%")
+                ),
+                column(width=3,
+                       selectInput("thirdCourse","Third Course:",levels(course$name),
+                                   selected=NULL,multiple=F,width="100%")
+                ),
+                column(width=3,
+                       selectInput("fourthCourse","Fourth Course:",levels(course$name),
+                                   selected=NULL,multiple=F,width="100%")
                 )
               ),
               fluidRow(
