@@ -10,6 +10,7 @@ library(ggplot2)
 library(xts)
 library('dygraphs')
 library(rjson)
+library(stringr)
 
 source("classify_emotion.R")
 source("classify_polarity.R")
@@ -38,6 +39,7 @@ names(colors)<-c('Neutral','Negative','Positive')
 #prof$profName<-factor(paste0(prof$first_name,' ',prof$last_name))
 load('www/prof.RData')
 load('www/course.RData')
+course[course$name == "Fundamentals of Computer Systems",]$Description <- "Fundamentals of computer organization and digital logic. Boolean algebra, Karnaugh maps, basic gates and components, flipflops and latches, counters and state machines, basics of combinational and sequential digital design. Assembly language, instruction sets, ALUs, single-cycle and multi-cycle processor design, introduction to pipelined processors, caches, and virtual memory."
 pos.words <- scan('www/positive-words.txt', what='character', comment.char=';')
 neg.words <- scan('www/negative-words.txt', what='character', comment.char=';')
 
