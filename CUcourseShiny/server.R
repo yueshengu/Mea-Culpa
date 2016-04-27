@@ -4,11 +4,12 @@ shinyServer(function(input, output, session) {
   
   observe({
     firstCourseMatch<-unique(as.character(course$name[grepl(paste(input$courseTopics,collapse='|'),
-                                                            tolower((course$Description)))|
+                                                            tolower(course$Description))|
                                                         grepl(paste(input$courseTopics,collapse='|'),
-                                                              tolower((course$name)))]))
+                                                              tolower(course$name))]))
     updateSelectInput(session,"firstCourse","First Course:",choices=firstCourseMatch,
                       selected=firstCourseMatch[1])
+    #secondCourseMatch<-firstCourseMatch[firstCourseMatch]
     
 
   })
@@ -111,6 +112,33 @@ shinyServer(function(input, output, session) {
     d3 <- as.character(courseData$course_ids[1])
     
     return(list(courseData,d2,d3))
+  })
+  
+  scheduleData<-reactive({
+    course1<-course[course$name==input$firstCourse,][1,]
+    
+    dat <- cbind(x=rep(0:4,each=25),y=rep(0:24,5),value=rep(0,125))#,name=rep(NA,125))
+    colnames(dat) <- c("x","y","value")#,'name')
+    if(course1$LectureDay==0){
+      dat[course1$LectureStartTime:course1$LectureEndTime,3]<-1
+      dat[(50+course1$LectureStartTime):(50+course1$LectureEndTime),3]<-1
+      # dat[course1$LectureStartTime:course1$LectureEndTime,4]<-as.character(course1$name)
+      # dat[(50+course1$LectureStartTime):(50+course1$LectureEndTime),4]<-as.character(course1$name)
+    }else if(course1$LectureDay==3){
+      dat[(75+course1$LectureStartTime):(75+course1$LectureEndTime),3]<-1
+      # dat[(75+course1$LectureStartTime):(75+course1$LectureEndTime),4]<-as.character(course1$name)
+    }else if(course1$LectureDay==1){
+      dat[(25+course1$LectureStartTime):(25+course1$LectureEndTime),3]<-1
+      dat[(75+course1$LectureStartTime):(75+course1$LectureEndTime),3]<-1
+      # dat[(25+course1$LectureStartTime):(25+course1$LectureEndTime),4]<-as.character(course1$name)
+      # dat[(75+course1$LectureStartTime):(75+course1$LectureEndTime),4]<-as.character(course1$name)
+    }else if(course1$LectureDay==4){
+      dat[(100+course1$LectureStartTime):(100+course1$LectureEndTime),3]<-1
+      # dat[(100+course1$LectureStartTime):(100+course1$LectureEndTime),4]<-as.character(course1$name)
+    }
+    
+    #browser()
+    return(dat)
   })
   
   # Also, I edited the UI.R code and added images to the www folder
@@ -248,10 +276,10 @@ shinyServer(function(input, output, session) {
     map <- Highcharts$new()
     map$chart(zoomType = "x", type = 'heatmap')
     map$credits(text = "Created with rCharts and Highcharts", href = "http://rcharts.io")
-    map$title(text='Sales per employee per weekday')
+    map$title(text='Weekly Schedule')
     
-    map$series(name = 'Sales per employee',
-               data = toJSONArray2(dat, json=FALSE),
+    map$series(name = 'Schedule',
+               data = toJSONArray2(scheduleData(), json=FALSE),
                color = "#cccccc",
                dataLabels = list(
                  enabled = TRUE,
@@ -265,7 +293,8 @@ shinyServer(function(input, output, session) {
     map$yAxis(categories = c('9-9:30am','9:30-10am','10-10:30am','10:30-11am','11-11:30am','11:30am-12pm', 
                              '12-12:30pm','12:30pm-1pm','1-1:30pm','1:30-2pm','2-2:30pm','2:30-3pm',
                              '3-3:30pm','3:30-4pm','4-4:30pm','4:30-5pm','5-5:30pm','5:30-6pm','6-6:30pm',
-                             '6:30-7pm','7-7:30pm','7:30-8pm','8-8:30pm','8:30-9pm','9-9:30pm'))
+                             '6:30-7pm','7-7:30pm','7:30-8pm','8-8:30pm','8:30-9pm','9-9:30pm'),
+              reversed=T,title=list(text = ""))
     
     map$xAxis(categories = c('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'),
               title=list(text = ""))
@@ -285,10 +314,8 @@ shinyServer(function(input, output, session) {
     #            y=25,
     #            symbolHeight=320)
     
-    # custom tooltip
-#     map$tooltip(formatter="#! function() { return '<b>' + this.series.xAxis.categories[this.point.x] + 
-# '</b> sold <br><b>' + this.point.value + '</b> items on <br><b>' + 
-#                 this.series.yAxis.categories[this.point.y] + '</b>'; } !#")
+    #custom tooltip
+    # map$tooltip(formatter="#! function() { return '<b>' this.point.name '</b>'; } !#")
     
     
     # set width and height of the plot and attach it to the DOM

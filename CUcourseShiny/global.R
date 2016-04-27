@@ -10,7 +10,6 @@ library(ggplot2)
 library(xts)
 library('dygraphs')
 library(rjson)
-library(stringr)
 
 source("classify_emotion.R")
 source("classify_polarity.R")
@@ -39,7 +38,8 @@ names(colors)<-c('Neutral','Negative','Positive')
 #prof$profName<-factor(paste0(prof$first_name,' ',prof$last_name))
 load('www/prof.RData')
 load('www/course.RData')
-course[course$name == "Fundamentals of Computer Systems",]$Description <- "Fundamentals of computer organization and digital logic. Boolean algebra, Karnaugh maps, basic gates and components, flipflops and latches, counters and state machines, basics of combinational and sequential digital design. Assembly language, instruction sets, ALUs, single-cycle and multi-cycle processor design, introduction to pipelined processors, caches, and virtual memory."
+course[course$name == "Fundamentals of Computer Systems",]$Description <- 
+  "Fundamentals of computer organization and digital logic. Boolean algebra, Karnaugh maps, basic gates and components, flipflops and latches, counters and state machines, basics of combinational and sequential digital design. Assembly language, instruction sets, ALUs, single-cycle and multi-cycle processor design, introduction to pipelined processors, caches, and virtual memory."
 pos.words <- scan('www/positive-words.txt', what='character', comment.char=';')
 neg.words <- scan('www/negative-words.txt', what='character', comment.char=';')
 
@@ -92,7 +92,7 @@ score.sentiment <- function(sentences, pos.words, neg.words, .progress='none') {
 #   x[sapply(x, is.null)] <- NA
 #   unlist(x)
 # })
-dat <- cbind(rep(0:4,25),rep(0:24,each=5),c(rep(1,5),rep(0,120)))#matrix(dat$data, ncol=3, byrow=TRUE)
-colnames(dat) <- c("x","y","value")
+# dat <- cbind(rep(0:4,each=25),rep(0:24,5),c(rep(1,5),rep(0,120)))#matrix(dat$data, ncol=3, byrow=TRUE)
+# colnames(dat) <- c("x","y","value")
 
 

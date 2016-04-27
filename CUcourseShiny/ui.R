@@ -99,11 +99,15 @@ dashboardPage(
       ),
       tabItem(tabName='rec',
               fluidRow(
-                column(width=4,
+                column(width=3,
                        selectInput("firstCourse","First Course:",levels(course$name),
                                    selected='Computer Architecture',multiple=F,width="100%")
-                       )
                 ),
+                column(width=3,
+                       selectInput("secondCourse","Second Course:",levels(course$name),
+                                   selected=NULL,multiple=F,width="100%")
+                )
+              ),
               fluidRow(
                 column(width=12,
                        box(title = "Schedule", status = "primary",
