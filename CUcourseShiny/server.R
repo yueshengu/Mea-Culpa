@@ -4,9 +4,9 @@ shinyServer(function(input, output, session) {
   
   observe({
     firstCourseMatch<-unique(as.character(course$name[grepl(paste(input$courseTopics,collapse='|'),
-                                                            tolower(course$Description))|
+                                                            tolower((course$Description)))|
                                                         grepl(paste(input$courseTopics,collapse='|'),
-                                                              tolower(course$name))]))
+                                                              tolower((course$name)))]))
     updateSelectInput(session,"firstCourse","First Course:",choices=firstCourseMatch,
                       selected=firstCourseMatch[1])
     
